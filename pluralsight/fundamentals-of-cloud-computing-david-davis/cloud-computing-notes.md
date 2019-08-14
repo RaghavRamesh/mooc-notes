@@ -336,6 +336,7 @@ IaaS vs PaaS
 IaaS
 - All servers, storage and networking are provided
 - Developers must install their own software such as web servers, database servers, etc.
+
 PaaS
 - PaaS runs on top of infrastructure as a service
 - Developers have access to already installed web servers, database servers, and development libraries
