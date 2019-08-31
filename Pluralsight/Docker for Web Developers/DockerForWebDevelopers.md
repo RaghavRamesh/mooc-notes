@@ -1,5 +1,5 @@
 Module 1 - Course Overview
-
+* * *
 
 Module 2 - What use Docker as a Web Developer?
 
@@ -63,6 +63,87 @@ Module summary
     * Simplify working with multiple apps
     * Consistency between environments
     * Ship faster!
+
+* * *
+
+Module 3 - Setting up your Docker Environment
+- Installing Docker on Mac
+- “ On Windows
+- Getting started with Docker Kitematic and in action
+
+Installing Docker on Mac
+- Followed video and successfully installed 
+
+Getting started with Docker Kitematic
+- GUI tool used to provision VMs and work with Images and Containers
+- Visually search for Docker images
+- Create, run and manage containers
+- Good for beginners to understand what’s going on
+
+Docker Kitematic
+- Learnt how to search for images in Docker Hub, create, stop and remove them
+
+* * *
+
+Module 4 - Using Docker Tools
+- Getting started with Docker machine - used to interact with the VM
+    - _Video. Not necessary if using Docker CE_
+- Getting started with Docker client - lets us do the following
+    - Interact with Docker Engine
+    - Build and manage images
+    - Run and manage containers
+- Key commands
+    - docker pull [image name]
+    - docker run [image name]
+        - To run the image in a container. By itself, the image is not very useful unless used somewhere. Will also pull the image if not already available.
+    - docker images
+        - List images.
+    - docker ps
+        - List containers. By default only shows running containers. -a lists all.
+    - docker rm [container id]
+        - Remove container
+    - docker rmi [image id]
+        - Remove image
+
+* * *
+
+Module 5 - Hooking your source code into a container
+
+Module agenda
+- The layered file system
+- Containers and volumes
+- Source code, volumes and containers
+- Hooking a container volume to source code
+- Removing containers and volumes
+
+Different ways to run src code on a container but this module focuses on the following
+
+1. Create a container volume that points to the source code
+
+2. Add your source code into a custom image that is used to create a container
+
+The layered file system
+- There are multiple layers. 
+- Image generally contains only read-only layers. E.g. Ubuntu image
+- Thing container layer is a read-write layer. That’s an essential difference. This layer interacts with the image layers. 
+- Our own source code, database, log files can either be put in the container in this RW layer or baked in as image layer. 
+- File layers can be shared across containers. 
+
+Containers and volumes
+- RW file layer of containers go away along with the container when deleted. Volumes are useful when you want to retain some files. 
+- What is a volume? Special type of directory in a container typically referred to as a “data volume"
+- Can be shared and reused among containers
+- Updates to an image won’t affect a data volume - they stay separate
+- Data volumes are persisted even after the container is deleted
+
+Source code, volumes and containers
+- Can define a volume and it writes to a directory in the Host and Docker manages that. 
+- docker run -p 8080:8080 -v /var/www node. 
+    - -v creates the volume in the Docker Host. Can be customised.
+    - /var/www is the container volume alias but actually writes to Host
+- docker inspect mycontainer 
+    - Returns a “mounts” field which tells the source (on the Docker Host) and destination (container alias) of the volume
+- _Ran a python server in Docker container_
 
 
 
