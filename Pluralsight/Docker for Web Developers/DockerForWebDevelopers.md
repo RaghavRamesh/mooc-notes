@@ -119,36 +119,69 @@ Module agenda
 Different ways to run src code on a container but this module focuses on the following
 
 1. Create a container volume that points to the source code
-
 2. Add your source code into a custom image that is used to create a container
 
-The layered file system
+##### The layered file system
 - There are multiple layers. 
 - Image generally contains only read-only layers. E.g. Ubuntu image
-- Thing container layer is a read-write layer. That’s an essential difference. This layer interacts with the image layers. 
+- Container layer is a read-write layer. That’s an essential difference. This layer interacts with the image layers. 
 - Our own source code, database, log files can either be put in the container in this RW layer or baked in as image layer. 
 - File layers can be shared across containers. 
 
-Containers and volumes
+##### Containers and volumes
 - RW file layer of containers go away along with the container when deleted. Volumes are useful when you want to retain some files. 
 - What is a volume? Special type of directory in a container typically referred to as a “data volume"
 - Can be shared and reused among containers
 - Updates to an image won’t affect a data volume - they stay separate
 - Data volumes are persisted even after the container is deleted
 
-Source code, volumes and containers
+##### Source code, volumes and containers
 - Can define a volume and it writes to a directory in the Host and Docker manages that. 
 - docker run -p 8080:8080 -v /var/www node. 
     - -v creates the volume in the Docker Host. Can be customised.
     - /var/www is the container volume alias but actually writes to Host
 - docker inspect mycontainer 
     - Returns a “mounts” field which tells the source (on the Docker Host) and destination (container alias) of the volume
-- _Ran a python server in Docker container_
+- Ran a node express server in Docker container
 
+##### Removing containers and volumes
+- When you run with -v without explicitly specifying where in Docker Host, then docker will manage the volume. It will create a dir in some part of the hard disk
+    - Can remove by docker rm -v [container name]
+- If you specify the location in Docker host, docker will not delete the volume / source code. 
 
+* * *
 
+### Module 6 - Building Custom Images with Dockerfile
 
+Module agenda
+- Getting started with Dockerfile
+- Create a custom Dockerfile
+- Building a custom image
+- Publishing an image to Docker Hub
 
+The second way of getting src code into a container -&gt; add your source code into a custom image that is used to create a container
+
+##### Getting started with Dockerfile
+
+Just a text file with instructions in it that the docker build command can take as input and generate a layered FS and create a Docker image
+- Text file used to build Docker images
+- Contains build instructions
+- Instructions create intermediate image that can be cached to speed up future builds
+- Used with “docker build” command
+
+Key Dockerfile instructions
+- FROM - from nothing or a base image - node
+- MAINTAINER - author - Raghav Ramesh or email
+- COPY - instruction to copy src code to container - . /var/www
+- WORKDIR - start working directory - /var/www
+- RUN - commands go here -  npm install
+- EXPOSE - expose ports - 8080
+- ENTRYPOINT - command to start things up - [“node”, “server.js”]
+- ENV - envvars
+- VOLUME - defining volumes
+
+##### Creating a custom node.js Dockerfile
+- _Followed along with the video_
 
 
 
