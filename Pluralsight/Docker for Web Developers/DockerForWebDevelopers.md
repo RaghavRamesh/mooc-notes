@@ -1,7 +1,7 @@
-Module 1 - Course Overview
+### Module 1 - Course Overview
 * * *
 
-Module 2 - What use Docker as a Web Developer?
+### Module 2 - What use Docker as a Web Developer?
 
 * What is Docker?
     * Party line - Lightweight, open, secure platform
@@ -66,7 +66,7 @@ Module summary
 
 * * *
 
-Module 3 - Setting up your Docker Environment
+### Module 3 - Setting up your Docker Environment
 - Installing Docker on Mac
 - “ On Windows
 - Getting started with Docker Kitematic and in action
@@ -85,7 +85,7 @@ Docker Kitematic
 
 * * *
 
-Module 4 - Using Docker Tools
+### Module 4 - Using Docker Tools
 - Getting started with Docker machine - used to interact with the VM
     - _Video. Not necessary if using Docker CE_
 - Getting started with Docker client - lets us do the following
@@ -107,7 +107,7 @@ Module 4 - Using Docker Tools
 
 * * *
 
-Module 5 - Hooking your source code into a container
+### Module 5 - Hooking your source code into a container
 
 Module agenda
 - The layered file system
