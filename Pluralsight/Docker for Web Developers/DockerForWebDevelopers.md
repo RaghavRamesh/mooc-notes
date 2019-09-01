@@ -93,16 +93,16 @@ Docker Kitematic
     - Build and manage images
     - Run and manage containers
 - Key commands
-    - docker pull [image name]
-    - docker run [image name]
+    - `docker pull [image name]`
+    - `docker run [image name]`
         - To run the image in a container. By itself, the image is not very useful unless used somewhere. Will also pull the image if not already available.
-    - docker images
+    - `docker images`
         - List images.
-    - docker ps
+    - `docker ps`
         - List containers. By default only shows running containers. -a lists all.
-    - docker rm [container id]
+    - `docker rm [container id]`
         - Remove container
-    - docker rmi [image id]
+    - `docker rmi [image id]`
         - Remove image
 
 * * *
@@ -137,10 +137,10 @@ Different ways to run src code on a container but this module focuses on the fol
 
 ##### Source code, volumes and containers
 - Can define a volume and it writes to a directory in the Host and Docker manages that. 
-- docker run -p 8080:8080 -v /var/www node. 
+- `docker run -p 8080:8080 -v /var/www node` 
     - -v creates the volume in the Docker Host. Can be customised.
     - /var/www is the container volume alias but actually writes to Host
-- docker inspect mycontainer 
+- `docker inspect mycontainer`
     - Returns a “mounts” field which tells the source (on the Docker Host) and destination (container alias) of the volume
 - Ran a node express server in Docker container
 
@@ -159,7 +159,7 @@ Module agenda
 - Building a custom image
 - Publishing an image to Docker Hub
 
-The second way of getting src code into a container -&gt; add your source code into a custom image that is used to create a container
+The second way of getting src code into a container - add your source code into a custom image that is used to create a container
 
 ##### Getting started with Dockerfile
 
@@ -169,7 +169,7 @@ Just a text file with instructions in it that the docker build command can take 
 - Instructions create intermediate image that can be cached to speed up future builds
 - Used with “docker build” command
 
-Key Dockerfile instructions
+##### Key Dockerfile instructions
 - FROM - from nothing or a base image - node
 - MAINTAINER - author - Raghav Ramesh or email
 - COPY - instruction to copy src code to container - . /var/www
@@ -183,7 +183,65 @@ Key Dockerfile instructions
 ##### Creating a custom node.js Dockerfile
 - _Followed along with the video_
 
+##### Building a Node.js image
+- Followed along with the video
+- Lots of intermediate containers which will be use for cached builds 
 
+##### Publishing an image to Docker Hub
+- `docker push [username]/[imagename]` (using your Docker Hub account)
+
+##### Summary
+- Dockerfile is a simple text file with instructions that is used to create an image
+- Each Dockerfile starts with a FROM instruction
+- Custom images are built using: `docker build -t [username]/[imagename] .`
+- Images can be pushed to Docker Hub to make it available for others
+
+* * *
+
+### Module 7 - Communicating between Docker containers
+
+Module agenda
+- Getting started with container linking
+- Linking containers by name (legacy linking)
+- Container linking in action
+- Getting started with container networks - bridge, container network
+- Container networks in action
+- Linking multiple containers
+
+Generally need to talk to multiple containers running different components of a system
+
+##### Legacy linking
+- Give a container a name and another container can link to it
+
+Step to link containers
+1. Run a container with a name - `docker run -d -—name my-postgres postgres`
+2. Link to running container by name - `docker run -d -p 5000:5000 -—link my-postgres:postgres danwahlin/aspnetcore`
+3. Repeat for additional containers
+
+##### Getting started with container networks
+Another way to connect containers with additional functionality. 
+Container network aka bridge network
+Need a better way to group containers / isolate group of containers - isolated network
+Containers within an isolated network can talk to each other by name
+
+1. Create a custom bridge network and give it a name
+    1. `docker network create -—driver bridge isolated_network`
+
+2. Run containers in the network 
+    1. `docker run -d —-net=isolated_network -—name mongodb mongo`
+    2. No need to do -—link. As long as the containers are within the same isolate network, they can already talk to each other. -—link is in fact not supported in this world.
+
+##### Linking multiple containers
+
+As you start adding more and more containers, it gets tedious to run a lot of commands to connect them all in a network. There is an easier way… Docker Compose
+
+##### Summary
+- Docker containers communicate using (legacy) link or network functionality
+- The -—link switch provides “legacy linking”
+- The —net command-line switch can be used to setup a bridge network
+- Docker Compose can be used to link multiple containers to each 
+
+* * *
 
 
 
