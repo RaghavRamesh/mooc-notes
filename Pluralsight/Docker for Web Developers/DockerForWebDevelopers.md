@@ -309,17 +309,24 @@ Key fields
 
 ##### Docker Compose in action
 
-Video
+_Video_
 
 ##### Setting up development environment services
 
-Video
+_Video_
 
 ##### Creating a docker-compose.yml file (for the above environment)
 
-Video
+_Video_
 
-A couple of lessons left
+##### Managing Development Environment Services
+_Video_
+
+##### Summary
+* Docker Compose simplifies the process of building, starting and stopping services
+* `docker-compose.yml` defines services
+* Excellent way to manage services used in a development environment
+* Key Docker Compose commands include “build”, “up” and “down"
 
 * * *
 
