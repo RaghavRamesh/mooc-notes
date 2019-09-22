@@ -243,6 +243,217 @@ As you start adding more and more containers, it gets tedious to run a lot of co
 
 * * *
 
+### Module 8 - Managing containers with Docker Compose
+
+Module agenda
+
+- Getting started with Docker Compose (and why we need it especially in a dev environment. There is Docker Cloud for production environments)
+- The docker-compose.yml file - config file for taking images and running them as containers
+- Docker Compose commands - `docker-compose`
+- Docker Compose in action
+- Setting up development environment services
+- Creating a custom docker-compose.yml
+- Managing development environment services
+
+
+##### Getting started with Docker Compose
+
+- Allows you to run multiple containers and manage their overall lifecycle
+- Manages the whole application lifecycle
+    - Start, stop and rebuild services (containers)
+    - View the status of running services
+    - Stream the log output of running services
+    - Run a one-off command on a service
+
+- Need for Docker Compose
+    - Helps in managing a bunch of services /containers that need to interact with each other instead of us having to do it by hand
+
+- Docker Compose workflow
+    - Use docker-compose to build services
+    - Then start up services
+    - Then tear down services when we’re done
+
+The docker-compose.yml file
+
+Role
+
+- Defines all of our services - caching, db, app server services, etc.
+- Run this txt file through Docker Compose build which will generate Docker Images (services)
+- So with one command can define the services and one other command can get them up and running. So very simple in a dev world.
+
+
+Key fields
+
+- version
+- services - define what is it that we want to be running
+    - Key service config options
+        - build - which dir to build from
+        - environment
+        - image - maybe starts with a base image, can specify here
+        - networks - like bridge network covered in previous module
+        - ports
+        - volumes
+
+
+##### Docker Compose commands
+
+- `docker-compose build` - build or rebuild services into images
+- `docker-compose up` - once up, create and start as containers
+- `docker-compose down` - stop all and remove the containers. Can add flags to remove all the associated images and volumes.
+- `docker-compose logs`
+- `docker-compose ps`
+- `docker-compose stop` - just stop all containers without removing them
+- `docker-compose start`
+- `docker-compose rm`
+
+
+##### Docker Compose in action
+
+Video
+
+##### Setting up development environment services
+
+Video
+
+##### Creating a docker-compose.yml file (for the above environment)
+
+Video
+
+A couple of lessons left
+
+* * *
+
+### Module 9 - Moving to Kubernetes
+
+Module agenda
+
+- Beyond Docker Compose - how it’s great for somethings and not for others
+- Intro to K8S
+- Converting Docker Compose to K8S
+- Running containers in K8S
+- Stopping and removing containers in K8S
+
+
+##### Beyond Docker Compose
+
+DC is great for dev env but what to do when moving to a different env like staging or prod?
+
+K8S is more automated than DC which is more manual. And you get to do things like load balancing, scaling up and down. Not designed for production.
+
+It would be nice if you could….
+
+- Package up an app, provide a manifest, and let something else manage it for us
+- Not worry about the management of containers
+- Eliminate single points of failure and self-heal containers
+- Have a robust way to scale and load balance containers
+- Update containers without bringing down the app
+- Have robust networking and persistent storage options
+
+
+What if we could define the containers we want and then hand it off to a system that manages it all for us?
+
+Welcome to Kubernetes!
+
+##### Introduction to Kubernetes
+
+“Kubernetes is an open-source system for automating deployment, scaling, and management of containerised applications.” - [https://kubernetes.io](https://kubernetes.io)
+
+“Kubernetes is the coach of a team of containers” or “Kubernetes is the orchestrator of an orchestra of containers"
+
+##### Kubernetes Overview
+
+- Container and cluster management
+- Supported by all major cloud platforms
+- Provides a declarative way to define a cluster’s state using manifest files (YAML)
+- CLI Tool to interact with Kubernetes using kubectl
+
+
+Key features (that set it apart from Docker Compose)
+
+- Service Discovery / load balancing
+- Storage orchestration
+- Automate rollouts/rollbacks
+- Manage workloads
+- Self-healing
+- Secret and config management
+- Horizontal scaling (of containers and nodes)
+- More++++
+
+
+Master is the one keeping the children in line
+
+(Worker) Node is like a VM
+
+Pod is a container for the containers - like a shipping container on a boat or like the blue Redmart box.
+
+1 cluster contains all these
+
+##### Running Kubernetes Locally
+
+Different ways
+- Minikube; or
+- Docker Desktop
+
+
+Key Kubernetes Concepts
+
+- Deployment
+    - Lets us describe the desired state with the help of YAML / JSON files. Can say “hey, I have these 5 containers and I need to them to communicate somehow"
+    - Can be used to replicate pods
+    - Support rolling updates and rollbacks
+- Service
+    - Containers run in pods but pods can live and die - so can’t count on the IP addresses of the pods or containers being there
+    - Services abstract the pod IP addresses from consumers - so consumers only need to worry about the service’s IP address
+    - Load balances between pods - in cases where there are multiple pods
+- There are many more concepts that are not covered in this course...
+
+
+##### Converting from Docker Compose to Kubernetes
+
+- Easiest way - Using Docker Desktop - [https://github.com/docker/compose-on-kubernetes](https://github.com/docker/compose-on-kubernetes)
+    - `docker stack deploy —orchestrator=kubernetes -c docker-compose.yml hellokube` or use the “deploy docker stack by default” in Docker Desktop
+
+
+- Kompose - [http://kompose.io](http://kompose.io)
+Need to convert the docker-compose.yml into Kubernetes service files
+
+##### Running Containers in Kubernetes
+
+Key commands
+- `kubectl version`
+- `kubectl get [deployments | services | pods]` - get info about d / s / p
+- `kubectl run nginx-server —image=nginx:alpine` - get one container up and running
+- `kubectl apply -f [fileName | folderName]` - easy way to get the declared config in files up and running
+- `kubectl port-forward [name-of-pod] 8080:80`
+
+
+##### Stopping and Removing Containers in Kubernetes
+
+Key commands
+- `kubectl delete -f [fileName | folderName]` - delete all the stuff defined in the folder. Easy way to clean up instead of deleting pod by pod.
+
+
+##### Summary
+
+- K8S provides a robust solution for automating deployment, scaling, and management of containers
+- Provides a way to move to a desired state
+- Relies on YAML (or JSON) files to represent desired state
+- Nodes and pods play a central role
+- A container runs in a pod
+- Kubectl can be used to issue commands and interact with the K8S API
+
+
+* * *
+
+### Module 10 - Reviewing the Case for Docker
+
+- Docker Web Developer Benefits - bringing up different components in a consistent way and port them over to the cloud if you like
+- Images and Containers - first-class citizens
+- Docker Toolbox - Docker Client, Docker Machine, Docker Compose, Docker Kitematic
+- Docker Volumes - linking source code from a running container on to your local machine in order to persist src code.
+- Dockerfile and custom images
+- Docker Compose - single YAML file to get your dev environment up and running instead of bringing each one up one-by-one using Docker Client
+
 
 
 
