@@ -133,11 +133,20 @@ Lets you target deployments
 
 ***
 
-Module 5 - Installing K8S
+### Module 5 - Installing K8S
+
+- Minikube
+    - `minikube dashboard` to visualize in a browser
+    - MK is similar to Docker for Mac / DFW - runs a Linux VM in the local computer
+    - MK - single node cluster
+
+- GKE
+- AKS
+- Manual
 
 * * *
 
-Module 6 - Working with Pods
+### Module 6 - Working with Pods
 - Smallest unit of scheduling in K8S
 - Pods:Kubernets :: VMs:VMWare :: Containers:Docker
 - Pods are bigger than Containers but are much much smaller than VMs
@@ -152,7 +161,7 @@ Module 6 - Working with Pods
 
 * * *
 
-Module 7 - Kubernetes Services
+### Module 7 - Kubernetes Services
 - Ok, so we have apps running in pods. How do we access our app?
     - From outside the cluster
     - From inside the cluster
@@ -191,7 +200,7 @@ Services have a subset of the pods’ labels except say, version. So when a new 
 
 * * *
 
-Module 8 - Kubernetes Deployments
+### Module 8 - Kubernetes Deployments
 - Deployments are the future
 - K8S deployments are all about rolling updates and simple rollbacks - the whole reason why they exist
 - Full on REST objects
@@ -219,7 +228,7 @@ Use —record flag while applying new deployment changes for audit history when 
 
 * * *
 
-Module 9 - What’s Next?
+### Module 9 - What’s Next?
 - Go declarative - they are self-documenting and lend themselves to config mgmt repos
 - Go Highly Available (H/A) `etcd` and other control plane bits. Makes sense to back them up. 
 - Explore more K8S objects - LoadBalancer Services (Ingress)
