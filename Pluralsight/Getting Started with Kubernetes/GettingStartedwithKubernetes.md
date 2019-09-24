@@ -133,7 +133,97 @@ Lets you target deployments
 
 ***
 
+Module 5 - Installing K8S
 
+* * *
+
+Module 6 - Working with Pods
+- Smallest unit of scheduling in K8S
+- Pods:Kubernets :: VMs:VMWare :: Containers:Docker
+- Pods are bigger than Containers but are much much smaller than VMs
+- Pods can host one or more containers (but use only when they need to be tightly coupled)
+- Define the pod in a manifest file and send it to the apiserver (you don’t generally do this. You uses services and replication controllers instead, even if it is only 1 pod)
+- Irrespective of how many containers are there in a pod, it gets only 1 IP
+- Every network inside a pod shares a single network namespace, “cgroups” limits, volumes, IPC namespaces
+- Atomic deployments: No such thing as a half-deployed pod. Pending state until all containers are up and ready. 
+- One pod gets scheduled to one node. Cannot be spread over multiple.
+- Pods are ephemeral. There is no bringing them back from the dead. You just replace them. Cattle instead of pets.
+- Same kubectl create command for all k8s objects with “kind” specified in manifest files
+
+* * *
+
+Module 7 - Kubernetes Services
+- Ok, so we have apps running in pods. How do we access our app?
+    - From outside the cluster
+    - From inside the cluster
+    - Service nails both of these
+- REST objects 
+- They are an abstraction over pods
+- Reliable network endpoint - service IP, DNS, Port never change unlike pods. 
+- Requests to service gets load balanced to all underlying pods
+- From inside the cluster, the service IP and DNS will work
+- From outside a service sets up some networking magic 
+- Endpoint object is maintained which keeps track of the pod IPs
+- Labels tie up service and pods
+    - Updating labels updates which pods the service load balances over
+
+Service discovery
+- DNS based (best way) cluster add-on - DNS service on the cluster. Kubelets go to this service for DNS
+- Or; Environment variables of pods after creating the services
+
+Service ports are going to be between 30000 and 32767
+
+Different `spec.type`s / `ServiceType`s  - 
+- ClusterIP: Stable internal cluster IP
+- NodePort: Exposes the app outside of the cluster by adding a cluster-wide port on top of ClusterIP
+- LoadBalancer: Integrates NodePort with cloud-based load balancers - highest abstraction (Ingress) - although not all Cloud balancers are created equal
+
+`selector.app` in service yaml file has to match our pod’s replication controller - otherwise cannot tie up service and pods.
+
+Endpoint object
+- When we create a service, an endpoint object is created which keeps track of pod IPs when they get created on-the-fly
+
+K8S services in the real world
+
+Updating business apps using labels. 
+
+Services have a subset of the pods’ labels except say, version. So when a new version of the pod is available, a new label is added to the service matching the new version, so service and the old pods are no longer tied up. Notice that the old pods are still there but they are not tied to the service. 
+
+* * *
+
+Module 8 - Kubernetes Deployments
+- Deployments are the future
+- K8S deployments are all about rolling updates and simple rollbacks - the whole reason why they exist
+- Full on REST objects
+- Use the declarative way. `kubectl run` uses the iterative way
+- Create them as a YAML / JSON file and give them to the `api server` to deploy
+- Wrap around RCs
+- RCs in the world of deployment are Replica Sets (video replaces RC above with RS)
+- How did we handle deployments before Deployments?
+    - Deploy pods through an RC. Then create a new RC with a different name then do kc rolling-update with new rc file. 
+    - No proper audit trail
+    - Felt like a kludge and a bolt-on
+- With Deployments
+    - Manifest -&gt; Master -&gt; Deployed to cluster
+    - Behind the scenes we get an RS. 
+    - Then when you want to push an update, make changes to the same manifest file. Apply the changes using `kubectl apply —record`
+    - Then in the background, a new RS is created, then pods are smoothly rolling updated. 
+    - Ensure you manage the manifest file in a source control. 
+    - The RSs don’t get garbage collected because they are needed for rollbacks
+
+Use —record flag while applying new deployment changes for audit history when you temp 
+
+`kubectl rollout history deployment &lt;deploy-name&gt;`
+
+`kubectl rollout status deployment &lt;deploy-name&gt;` to watch while it finishes rolling
+
+* * *
+
+Module 9 - What’s Next?
+- Go declarative - they are self-documenting and lend themselves to config mgmt repos
+- Go Highly Available (H/A) `etcd` and other control plane bits. Makes sense to back them up. 
+- Explore more K8S objects - LoadBalancer Services (Ingress)
+- Look at the wider ecosystem - CoreOS rkt, Docker, GKE, ...
 
 
 
