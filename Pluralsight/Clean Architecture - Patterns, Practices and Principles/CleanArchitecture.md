@@ -78,3 +78,119 @@ Decisions, decisions, decisions…
     - Context is king
     - All decisions are a tradeoff
     - Align with business goals
+
+***
+
+### Module 3 - Domain-centric Architecture
+
+##### Overview 
+- Domain-centric architecture and how it varies from database-centric architecture
+- Types of Domain-centric architectures
+- Pros and Cons
+
+##### Domain-centric Architecture
+
+DBCA - architecture revolved around the database. Lately, there has been shift towards making the Domain the center and considering the db as just an implementation detail
+
+“The first concern of the architect is to make sure that the house is usable, it is not to ensure that the house is made of brick.” - Uncle Bob
+
+What is essential vs. detail? 
+
+E.g. while building a house:
+- Space is essential
+- Usability is essential
+- Building material is a detail
+- Ornamentation is a detail
+
+Similarly, we need to look at what is essential for the inhabitants of the architecture
+- Domain is essential - without it the system will not represent the mental models of the users
+- Use cases are essential 
+- Presentation is a detail - JS vs [ASP.NET](http://ASP.NET) MVC is just a detail
+- Persistence is a detail - SQL vs NoSQL db is just a detail. They are important yes, but not more than the essentials which are about solving the problems of the users. 
+
+##### Domain-centric architectures
+
+Hexagonal Architecture
+
+[Hexagonal archiecture](img.png)
+
+Onion Architecture
+
+[Onion Architecture](img.png)
+
+No inner layer knows about the outer layer. 
+
+The Clean Architecture
+
+[The Clean Architecture](img.png)
+
+All 3 architectures have roughly the same benefits. Essentially, they put the domain model at the center, wrap it in an application layer which embeds the use cases, adapts the application to implementation details and all dependencies should point inwards towards the domain. 
+
+##### Pros and Cons
+Pros
+- Focus on domain =&gt; puts inhabitants’ needs at the center =&gt; cost reductions in maintaining the software
+- Less coupling between domain logic and implementation detail =&gt; more flexible and adaptable =&gt; more easily evolved
+-  Allows for Domain Driven Design (DDD) - which is a great set of strategies for handling high degree of complexity
+
+Cons
+- Change is difficult - most are taught only the traditional 3-layered db-centric architecture 
+- Requires more thought to implement a domain-centric design - it requires thinking about what classes belong in the domain layer, vs. what classes belong in the application layer rather than placing everything in the business logic layer
+- Initial higher cost compared to a db-centric architecture but eventually pays off. 
+
+* * *
+
+### Module 4 - Application Layer
+
+##### Overview
+- Application Layer - learn about architectures with an application layer and how it differs from the traditional 3-layered architecture
+- Dependency Inversion Principle - which helps make arch more flexible and maintainable
+- Pros and Cons
+
+##### What are Layers?
+
+Boundaries and Vertical partitions of an application designed to 
+- Represent different levels of abstraction
+- Maintain the single-responsibility principle
+- Isolate developer roles and skills
+- Help support multiple implementations
+- Assist with varying rates of change
+
+Essentially, layers are how we slice the application into manageable units of complexity
+
+##### Classic Three-layer Architecture
+
+Suitable for basic CRUD applications. 
+
+##### Modern Four-layer Architecture
+
+##### Application layer 
+- Implements use cases as executable code - e.g., shopping cart code
+- High-level application logic - e.g., command that adds an item to a shopping cart
+- Knows about the domain layer
+- No knowledge of other layers like presentation, persistence or infrastructure layers. 
+- Contains interfaces for dependencies
+- Then we use an IoC (Inversion of control) framework and dependency injection to wire up all the interfaces and their implementations at runtime
+
+##### Layer dependencies
+
+Dependency inversion - abstractions should not depend on details, rather, details should depend on abstractions. Hence the arrow from infrastructure to application and persistence to application instead of the other way around. 
+
+Inversion of control - that is, the dependencies oppose the flow of control in our application, which provides several benefits like
+- Independent deployability - i.e., we can replace the implementation in product without affecting  the dependencies 
+- Flexible and maintainable - for e.g., we can swap out our persistence and infrastructure dependencies without having negative side effects ripple throughout the application and domain layers
+
+Sometimes we may need to add an additional dependency from the persistence to the domain when using an Object Relational Mapper. This is necessary for the ORM to map the domain entities into tables in the database since the persistence layer needs to know about the domain entities. But using an ORM is optional but saves a tremendous amount of time. 
+
+##### Why use an Application Layer?
+
+Pros
+- Focus on use cases
+- Embed use cases as high-level executable code - easy to understand
+- Follows DIP - makes code more flexible and lets us decide implementation details until later
+
+Cons
+- Additional layer cost - generally we want to keep the number of layers small
+- Requires extra thought on what belongs in application layer and what belongs in domain layer rather than just throwing it all in business logic layer
+- IoC is counter-intuitive initially 
+
+***
