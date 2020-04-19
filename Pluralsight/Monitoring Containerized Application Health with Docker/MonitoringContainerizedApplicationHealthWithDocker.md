@@ -87,3 +87,38 @@ set a schedule to how often P makes an HTTP GET request to the /metrics endpoint
 - Job configs
     - The target configuration is the server address or IP address and port.
     - Add a job for each application you want to monitor and specify the container name as the target
+
+##### Understanding Prom Data Types
+* Counter
+    * Simple number
+    * Always increases
+    * Use for incrementing metrics
+        * Requests processed
+        * Errors handled
+* Gauge
+    * Simple number
+    * Can inc or dec
+    * Use fo measurements and snapshots
+        * Memory consumption 
+        * Current thread count
+* Histograms & Summaries
+    * Groups of samples
+    * Record count of samples and total
+    * Use for quantiles
+        * 95th percentile SLA
+    * Not supported by all clients
+
+***
+
+### Module 4 - Exposing Runtime Metrics to Prometheus
+
+* All the major application runtimes track their own metrics. Java has JVM Metrics, .NET has Windows perf counters.
+* Web servers like Tomcat and IIS also collect metrics - such as useful data about requests and responses. 
+* A lot of useful information is already collected by the runtime, we just need to expose it from the container
+
+Exporter
+* Common pattern 
+* A generic utility application that exposes metrics for a particular runtime that Prom can poll
+* For apps that are not actively developed, an exporter utility can be created to expose the already made available runtime metrics
+* Many exporter tools available some of which are supported by the Prometheus team
+
