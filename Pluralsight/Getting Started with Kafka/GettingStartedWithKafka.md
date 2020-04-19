@@ -1,3 +1,5 @@
+# Getting Started with Kafka - a Pluralsight course by Ryan Plant
+
 ### Module 1 - Course overview
 
 * * *
