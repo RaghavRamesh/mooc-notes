@@ -1,4 +1,4 @@
-# Pivotal Cloud Foundry Developer
+# Pivotal Cloud Foundry Developer - Pluralsight course by Pivotal Education
 
 ### Module 1 - Introduction
 

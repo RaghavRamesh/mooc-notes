@@ -1,3 +1,5 @@
+# Monitoring Containerized Appliction Health with Docker - Pluralsight course by Elton Stoneman
+
 ### Module 1 - Course overview
 
 Monitoring is one of the biggest advantages Docker brings. Number 1 barrier from migrating applications to containers has been monitoring

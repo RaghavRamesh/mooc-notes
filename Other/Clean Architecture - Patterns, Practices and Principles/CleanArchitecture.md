@@ -1,4 +1,4 @@
-# Clean Architecture - Patterns, Practices and Principles
+# Clean Architecture - Patterns, Practices and Principles - Pluralsight course by Matthew Renze
 
 ### Module 1 - Course overview
 

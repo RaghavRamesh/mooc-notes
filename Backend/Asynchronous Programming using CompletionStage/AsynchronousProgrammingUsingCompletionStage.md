@@ -1,4 +1,4 @@
-# Java Fundamentals: Asynchronous Progamming using Completion Stage
+# Java Fundamentals: Asynchronous Progamming using Completion Stage - Pluralsight course by Jose Paumard
 
 ### Module 1 - Course Overview
 _Nothing much to note here_
@@ -80,7 +80,62 @@ _Nothing much to note here_
 
 ---
 
-_To be continued..._
+### Module 3 - Setting up Asynchronous Operations with CompletionStage
+
+##### Agenda of this module
+* Concept of asynchronous operation
+* What is a task? How can we model? And what we can do with it? (Before this API was introduced)
+* What does it mean to launch it asynchronously?
+* Patterns
+
+##### What is a Task?
+* A task is something a computer has to execute. It’s a computation
+* It may take an input
+* It may produce an output
+* It may have side-effects - not really an output of a task but it modifies the global state of the application. Since it’s not an output, it cannot be used as an input for another task. 
+* It has to be an object! Because everything in Java is an object (Except for lambda expressions)
+* There is a confusion
+    * The implementation of the task
+    * The object that wraps this task 
+* This wrapper carries meta info on the state of this task
+* The 1st information is its completion. This wrapper is the CompletableFuture
+
+##### Defining and Writing a Task
+What are the available _models_ to launch tasks in _another_ thread? 
+* Runnable interface
+    * It models a function that does not take any parameter and does not return anything. Since Java 8 it’s a functional interface
+    * <TODO: insert img from Evernote>
+* Callable interface
+    * The Callable interface models a task that does not take an argument but that can produce a result and that can fail with an exception
+    * <TODO: insert img from Evernote>
+
+It is always possible to _launch_ a task in the _current_ thread using “run” in Runnable and “call” in Callable
+The “java.util.concurrent” API brings patterns to launch them in another thread
+
+
+##### How to launch tasks in another thread?
+* Two patterns
+    1. Runnable
+        1. Available since Java 1. 
+        2. It is an obsolete pattern that should not be used anymore. If found in code, replace with Executor pattern. 
+        3. <TODO: insert img from Evernote>
+    2. Executor
+        1. The executor service pattern has been introduced in Java 5
+        2. Also works with Runnable. You create an executor using one of the many factory methods of the executor’s factory class. 
+        3. <TODO: insert img from Evernote>
+        4. Also works with the Callable model. 
+        5. <TODO: insert img from Evernote>
+        6. One can get the result of the reading of the web page through a future object.
+    * What can be done with this future object?
+        * It can be queried for the returned object
+        * It can be cancelled
+        * And that’s it. Can’t do anything more. Launch in a thread and get the result back in the thread where it was launched. 
+
+##### From Future to Completable Future
+* _to be continued..._
+
+
+
 
 
 
