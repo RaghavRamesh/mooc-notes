@@ -157,8 +157,22 @@ Discord
 * Discord is OK
     * Utilising discordant palettes is a perfectly okay decision. So long as it’s thoroughly implemented. 
 
-_To be continued..._
+##### Demo
+* _Insightful demo on how to use Adobe Color to come up with a colour palette for a mock design scenario_
+* Rules are helpful for understanding the structure that yields harmony but we’re not bound to the harmony rules - feel free to colour outside the lines as much as you feel comfortable
+* Knowing how, why, and when to deviate from the harmony rules is far more important than simply knowing how to implement colour harmony
 
+##### The Illusion of Transparency
+* Two types of Transparency
+    * Physical objects - the physics of light interacting with real objects in physical space
+    * Optical illusions - solid colours interacting relative to one another to create the illusion of transparency
+* Opaque - cannot see through. Light is either absorbed or reflected
+* Translucent - translucent surfaces can be partially seen through - some light passes through, some reflects
+* Transparent - allow most or all light to pass through. Won’t obscure the object behind it much
+* Overlapping two items of contrasting colours with an in-between colour in the overlapping area creates an illusion of translucency. If you take the items apart, the illusion is broken and if the colour is not an in-between colour, the illusion is broken. 
+* Book recommendation: “Interaction of Coloraturas” - Josef Albers
+
+---
 
 
 
