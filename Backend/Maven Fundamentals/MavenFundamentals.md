@@ -65,10 +65,64 @@ Maven
 * Transitive dependencies
 * Versioned
 
-Installation Best Practices
 
+### Module 3 - Structure
 
-_To be continued_
+Overview
+* Folder structure
+* POM file basics
+* Basic commands and goals
+* Dependencies
+* Local Repo
+
+Folder Structure
+* By default maven 
+    * looks for a src/main/java folder 
+    * Compiles to a target folder
+    * Based on what’s in “pom.xml"
+
+“src/main/java"
+* All Java code goes here
+* Package declaration starts here
+* Other Languages - src/main/groovy or src/main/resources
+* Testing - “src/test” - can have them reference the same package structure. Specifically for unit tests
+
+“target"
+* Where everything gets compiled to
+* Tests - run from here
+* Package contents
+
+“pom.xml”
+* Lot of things are assumed here - convention over configuration
+* Project info - <project> - the meat
+    * <groupId> - often the same as the package - com.pluralsight
+    * <artifactId> - name of application. This is how the artifact will be name as well
+    * <version> - application version; 
+    * <modelVersion> - is almost always 4.0.0 - the author hasn’t seen anything else used in general
+    * <packaging> - how we want to distribute our app - jar is the default
+
+Dependencies
+* Naming convention
+* “groupId”, “artifactId”, “version” - you need to know these of your libraries. Good thing is it pulls in the transitive dependencies
+* <dependencies>
+
+Goals
+* “clean” - deletes the target directory and any of its generated sources
+* “compile” - compile all source code and generate files for say, web services like skeletons and resources get copied over to target
+* “package” - Runs “compile" first. But we can daisy chain goals. Runs unit tests depending on the type we have defined in POM
+* “install” - Runs “package" and then it will install it in the local repo. Places the jar or war in the repo.
+* “deploy” - does not deploy to an app server. Runs “install" and then deploys it to a corporate or remote repository. It’s the remote equivalent of “install"
+
+Defaults
+* Typically maven will have to be used to work with a legacy project where the defaults don’t work
+* Build section is used for overriding defaults 
+* Maven storage
+    * ~/.m2/repository
+    * Stores artifact using info <groupId>/<artifactId>/<version>
+    * This avoid duplication
+
+---
+
 
 
 
