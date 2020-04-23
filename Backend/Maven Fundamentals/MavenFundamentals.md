@@ -123,7 +123,69 @@ Defaults
 
 ---
 
+### Module 4 - Dependencies
 
+Overview
+* Versions
+* Types
+* Transitive dependencies
+* Scopes - test, provided, etc.
+
+* 3 items are required to list a dependency
+    * groupId
+    * artifactId
+    * version
+
+Versions
+* Release number of the dependency
+* SNAPSHOT
+    * All of your internal development should start of as a snapshot
+    * You should also be aware of using snapshots from other 3rd-party libraries
+    * It allows us to push new code up to a repository or a development team, every time. 
+    * If you use a library with SNAPSHOT specified in the version, then you pull the code of the library every time
+    * Doesn’t work if it is lower case
+    * You never want to release to production using “SNAPSHOT” because we cannot reproduce or recreate the code because the next time you compile it the version could be different underneath for us
+* Release
+    * Doesn’t have to be a specific naming convention
+* Industry common terms
+    * These don’t affect maven but helps in conceptualising 
+        * “M” milestone. myapp-1.0-M1.jar
+        * “RC” release candidate. myapp-1.0-RC1.jar
+        * “RELEASE” - to look similar to the SNAPSHOT convention
+        * “Final” 
+        * Can be used when you can't use SNAPSHOT cuz production but at the same time not fully stable
+
+Types
+* Refers to Packaging Types
+    * “pom”, “jar”, “war”, “ear”, maven-plugin, “rar”, “par”. “*ar” are all just glorified zip files
+    * “pom” - dependency POM. Will download all the dependencies mentioned in the POM onto our application
+
+Transitive Dependencies
+* Without a doubt the main reason people use Maven
+* The feature where maven automatically pulls in dependencies of the dependency listed in your POM
+
+Scopes
+* 6 scopes
+* compile
+    * default
+    * Means all my resources are available everywhere inside of my application
+* provided
+    * A lot like “compile" - artifact is going to be available throughout the build cycle. 
+    * Included in all phases / goals but not going to package it up in the end in the final artifact. E.g., servlet APIs which are available in the container we are deploying our app to. 
+* runtime
+    * Not needed for compilation but needed for runtime. e.g., jdbc jars or whatever that’s loaded in runtime. 
+    * We need this bundled in our application. So it’s kind of the opposite of “provided”. No need for compiling, testing, packaging but need it for app to run
+* test
+    * Available only in the test, compilation and execution phase. 
+    * It does nothing for compiling, does nothing for packaging. Also not included in final artifact. e.g., jUnit, 
+* system
+    * Never use this. This is for hardcoding a path in the file system. So it deters distribution. Only included in maven for the use case where you want to “mavenize” existing legacy apps. 
+* import
+    * Advanced topic for sharing dependencies across multiple POMs. Not covered in this course. 
+
+---
+
+_To be continued..._
 
 
 
