@@ -194,3 +194,117 @@ Cons
 - IoC is counter-intuitive initially 
 
 ***
+
+---
+
+### Module 5 - Commands and Queries
+
+##### Overview
+* Commands and Queries - and how we strive to keep them apart in our architecture
+* CQRS Architectures - 3 types
+* Pros and Cons of CQRS practices
+* Demo
+
+##### Command-Query Separation
+* 1988 - Bertrand Meyer 
+* Command 
+    * Does something 
+    * Should modify state 
+    * Should not return value
+* Query
+    * Answers question
+    * Should not modify state
+    * Should return value
+* Should keep these two apart to avoid nasty side effects that hide in methods that violate this principle
+* As Martin Fowler points out, this is not always possible. 
+    * For e.g., stack.pop() - it both removes item (command) and returns the top item (query). 
+    * Or when creating a new record - create record (command), return created record’s id (query). 
+    * So there are clear exceptions to this rule but in general we should strive to keep the two apart
+
+##### CQRS Architectures 
+* Expands the CQ separation to the architectural level
+* _TODO: insert image from Evernote_
+* Queries should be optimised for reading data; Commands should be optimised for writing data - this improves performance and the clarity of the code
+* Persistence - ORM like Hibernate; Data Access - ORM projections
+* Single database CQRS (refer image above)
+    * Single database
+    * Commands use domain
+    * Queries use database
+    * Simplest of the 3
+* Two-database CQRS
+    * _TODO: insert image from Evernote_
+    * Read and write database
+    * Commands use write DB (3NF)
+    * Queries use read DB (read optimised like 1NF)
+    * Eventual consistency 
+    * Orders of magnitude faster for reads
+* Event Sourcing CQRS
+    * _TODO: insert image from Evernote_
+    * Store events
+        * Historical records of all events stored in a persistence medium called an event store
+    * Replay events 
+    * Modify entity
+    * Store new event
+    * Update read database
+    * Benefits 
+        * Complete audit trail
+        * Point-in-time reconstruction
+        * Replay events
+            * Useful for load and stress testing
+        * Multiple read database 
+        * Rebuild production database just by replaying
+    * Significant additional expense if you don’t need any of the above features
+
+##### Pros and Cons
+* Pros
+    * More efficient design
+    * Optimised performance
+    * Event sourcing benefits
+* Cons
+    * Inconsistent across stacks - command stack vs query stack
+    * 2 db arch potentially introduces eventual consistency
+    * Event sourcing introduces cost to create and maintain the event sourcing features
+
+##### Demo
+_video_
+
+---
+
+
+### Module 6 - Functional Organization
+
+##### Overview
+* Screaming Architecture 
+* Functional vs. Categorial cohesion
+* Pros and Cons of Functional Organization
+* Demo
+
+##### Screaming Architecture
+* “The architecture should scream the intent of the system!” - Uncle Bob
+    * We do this by organising the architecture around the use cases of the system.
+* We can organise our application’s folder structure and namespaces according to the components that are used to build the software - like Models, Views and Controllers or we can organise according to the use cases of the system, concepts pertaining to user’s interactions with the objects of the system like Customers, Products and Vendors
+* Model your application folder structure like a multi-storeyed building - each layer of architecture corresponds to a floor in the building. Keep components that belong to the following categories near to each other
+    * Persistence and Infrastructure layer / folder
+    * Domain layer / folder
+    * Application layer / folder
+    * Presentation layer / folder
+
+##### Pros and Cons
+* Pros
+    * Spatial locality - components that are used together live together. For e.g., forks, spoons and knives live together instead of eating fork, tuning fork near each other because they are both forks
+    * Easy to navigate - looking for Employee related classes would be easy because one just needs to navigate to the Employee folder in the presentation layer and are all contained there
+    * Avoid vendor lock-in - not forced to use the directory structure recommended by the framework
+* Cons
+    * Lose framework conventions
+    * Lose automatic scaffolding provided by framework
+    * Categorical is easier at first but makes things worse later
+
+##### Demo
+_video_
+
+---
+
+
+
+
+
