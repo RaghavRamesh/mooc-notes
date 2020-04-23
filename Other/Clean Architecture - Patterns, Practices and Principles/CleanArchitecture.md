@@ -304,7 +304,177 @@ _video_
 
 ---
 
+### Module 7 - Microservices
+
+##### Overview
+* Bounded Context - how they can be used to sub-divide a domain model
+* Microservices - sub-divide a monolithic app
+* Pros and Cons
+* Demo
+
+##### Components
+* This is how we sub-divide our application once it grows beyond a manageable size
+* When we model classes that are applicable in multiple contexts, things don’t feel right because there are properties or methods that make sense in one context but not in others
+
+##### Bounded Context
+* It is the recognition of a specific contextual scope within which a specific model is valid
+* _TODO: insert image from Evernote_ 
+    * Employee model is split into Sales Person and Support Person classes
+    * Then we transfer state using clearly defined interfaces using either coordinated transactions or using an eventual consistency model
+
+##### Microservices
+* Subdivide monolithic applications into smaller subsystems
+* Communicate between each other using clearly defined interfaces typically using light-weight web protocols - JSON over HTTP via REST APIs
+* Helps divide large teams into smaller teams - say, 1 micro service per team
+* Makes the sub-systems independent allowing for separate tech stack that’s appropriate for each microservice
+* Independently deploy and scale as needed
+* Similar in concept to service-oriented architectures
+* 2 common questions
+    * How big should each microservice be? 
+    * Where should I draw the boundary for each microservice?
+    * This is where Bounded Contexts come in. Microservices have natural alignment to bounded contexts. 
+    * Ideally we want each microservice, each domain, each database and each development team to line up - maximises cohesion, minimises coupling. Allows team to focus on single domain. 
+    * Still large debate on how small a microservice should be. 
+
+##### Pros and Cons
+* Pros
+    * Flatter cost curve compared to monoliths - cost of building microservices up front is larger but it grows slowly as the system grows. So for projects with large domains, project lifecycles, in theory microservices are appropriate
+    * High cohesion and low coupling
+    * Independence - practices, deployment, tech
+* Cons
+    * Higher up-front cost
+    * Conway’s Law - orgs which design systems are constrained to produce systems that mirror the communication structures of their orgs. So your org structure should be compatible with your architecture. Microservices are suitable for agile teams whose org is not setup as a bureaucratic top-down non-autonomous styles
+    * Distributed system costs - network latency, fault tolerance, load balancing and more. 
 
 
+##### Demo
+_video_
 
+---
+
+
+### Module 8 - Testable Architecture
+
+##### Overview
+* Test-Driven Development
+* Test Automation Pyramid
+* Pros and Cons
+* Demo
+
+##### The Current State of Testing
+* Despite advancements in technology and the awareness around the practice, many software developers still practice
+    * Very little testing
+    * Ineffective testing
+    * Inefficient testing
+* And the reasons include
+    * Not enough time
+    * Not my job
+    * It’s too hard to create good tests as the architecture makes it difficult to add tests
+* The module covers how clean architecture makes testing easier. In addition how TDD drives the design of a clean architecture. 
+
+##### Test-Driven Development
+* Write a failing test first and use this to drive the design of the architecture - Red, Green, Refactor
+    1. Create a failing test
+    2. Get the test to pass by writing minimal code
+    3. Improve the code
+* You end up creating a comprehensive suite of tests
+* Drives testable design as the design of the class is driven by passing the tests
+* More maintainable
+* Eliminates fear that making changes will break the code
+* Key component for creating a testable architecture
+
+##### Types of tests
+* Based on what they are testing
+    * Unit tests
+    * Integration tests
+    * Component tests
+    * Service tests
+    * UI tests
+* Based on why they are testing
+    * Functional tests
+    * Acceptance tests
+    * Smoke tests
+    * Exploratory tests
+* Based on how they are testing
+    * Automated tests
+    * Semi-automated tests
+    * Manual tests
+
+##### Test Automation Pyramid
+* _TODO: insert image from Evernote_
+* Focus on creating many low-cost unit tests, medium-cost service tests, few high-cost UI tests and very few manual tests
+* Acceptance tests - 
+    * verify functionality; 
+    * Language of product owners; 
+    * criteria for completeness; 
+    * full tests are problematic
+    * Eliminate user interface
+    * Eliminate database
+* This helps us to 
+    * Eliminate dependencies
+    * Focus on the essential 
+    * Smoke test instead for high-cost UI tests
+    * Minimize manual tests
+    * Let testers focus on exploratory tests instead to provide high quality UX for users
+
+##### Pros and Cons
+* Pros
+    * Easier to test
+    * Improves design => more maintainable
+    * Eliminates fear to make changes
+* Cons - there should be hardly any reason to not have tests, but for the sake of counter-argument
+    * Higher up-front cost
+    * TDD requires discipline
+    * Requires team buy-in
+
+##### Demo
+_video_
+
+---
+
+### Module 9 - Evolving the Architecture
+
+##### Overview
+* Evolving the Architecture over the lifecycle of the project to reduce the risk of uncertainties
+* More info on architectural styles mentioned in the course
+* Course wrap-up
+
+##### Evolving the Architecture
+* Last responsible moment - delay decisions until the cost of not making the decision is greater than the cost of making the decision. By doing so, we 
+    * Make informed decisions; avoid premature optimisations
+* Deciding too early is a risk
+* Deciding too late is a risk
+* Eliminate risk early 
+    * For e.g., by focusing on the domain and application logic in solving the user problems we can validate whether or not software will provide enough user value before investing in implementation details
+* Clean architecture will help survive through the following
+    * Technology may change
+    * Markets may change
+    * Preferences may change
+* Pros of building an evolutionary architecture
+    * Embraces uncertainty
+    * Embraces change - inevitable 
+    * Reduces certain types of risk
+* Cons
+    * Assumes uncertainty - but usually this is the case with large apps
+    * Assumes instability - but usually this is the case with large apps
+    * Still has limitations
+
+##### Where to go next
+* Recommended books
+    * Patterns of Enterprise Application Architecture, 2003, Martin Fowler
+    * Clean Architecture, Uncle Bob
+    * Domain-Driven Design, Eric Evans
+    * Dependency Injection in .NET, Mark Seaman
+* Pluralsight courses
+    * Domain-Driven Design Fundamentals - Steve Smith and someone else
+    * Domain-Driven Design in Practice
+    * Modern Software Architecture
+    * Microservices Architecture
+    * Dependency Injection On-Ramp
+* Websites
+    * http://martinfowler.com
+    * CQRS: goodenoughsoftware.net; udidahan.com; 
+    * http://www.matthewrenze.com
+
+----
 
