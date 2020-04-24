@@ -74,7 +74,7 @@ Course link: https://app.pluralsight.com/library/courses/color-theory-fundamenta
         * Use tints, shades and tones of colours
 * Colour temperature
     * When we split colour wheel in half, we have cold tones on the left and warm tones on the right
-    * 
+    * _TODO: insert image from Evernote_
     * Absolute warm - yellow, orange, red
     * Absolute cold - blues
     * Colour temperatures is relative to the colours around it
