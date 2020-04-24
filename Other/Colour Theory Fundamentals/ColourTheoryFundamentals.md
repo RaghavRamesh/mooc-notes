@@ -1,7 +1,9 @@
 # Colour Theory Fundamentals - Pluralsight course by Chris Davis
+Course link: https://app.pluralsight.com/library/courses/color-theory-fundamentals
+
 ### Module 1 - Course Overview
 
-* Taught by a photographer - working knowledge of how to successfully use and communicate with colour in their routines
+* Taught by a photographer - working knowledge of how to successfully use and communicate with colour in your routines
 * Topics include foundational characteristics of colour, hue, saturation
 * Colour wheel - structures that help build colour palettes
 * Creating colour harmony and discord
@@ -10,7 +12,7 @@
 
 ### Module 2 - Prerequisite Knowledge before Studying the Colour Wheel
 
-* 2 main color modes
+* 2 main colour modes
     * Physically printed - subtractive. 
         * Primary colours used are cyan, magenta and yellow which when printed on top of each other produce darker colours eventually leading to black.
         * Called subtractive because as layers of ink are added to one another, they get progressively darker because they’re absorbing the available visible light and the colour we see is the result of the remaining light that is reflecting into our eye. As you add more cyan, magenta and yellow, the colours approach black because you’re subtracting visible light waves thus this is a subtractive colour mode.
@@ -20,7 +22,7 @@
         * RGB
         * When we increase intensity of the RGB colours, the result is white
 * Definitions 
-    * Color
+    * Colour
         * Too broad to describe all colours
         * Not an incorrect term
         * Simply too vague
@@ -75,7 +77,7 @@
     * 
     * Absolute warm - yellow, orange, red
     * Absolute cold - blues
-    * Color temperatures is relative to the colours around it
+    * Colour temperatures is relative to the colours around it
         * Red is warmer than yellow
         * Blue is colder than cyan (even colours within the same hue can be warmer or cooler than one another)
     * Warmer colours have longer / slower wavelengths 
@@ -113,7 +115,7 @@
 
 ---
 
-### Module 4 - Leveraging Coloraturas as Communication
+### Module 4 - Leveraging Colours as Communication
 
 ##### Understanding Colour Harmony and Discord
 
@@ -170,7 +172,7 @@ Discord
 * Translucent - translucent surfaces can be partially seen through - some light passes through, some reflects
 * Transparent - allow most or all light to pass through. Won’t obscure the object behind it much
 * Overlapping two items of contrasting colours with an in-between colour in the overlapping area creates an illusion of translucency. If you take the items apart, the illusion is broken and if the colour is not an in-between colour, the illusion is broken. 
-* Book recommendation: “Interaction of Coloraturas” - Josef Albers
+* Book recommendation: “Interaction of Colours” - Josef Albers
 
 ---
 
