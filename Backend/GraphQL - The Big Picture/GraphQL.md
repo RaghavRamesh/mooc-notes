@@ -180,7 +180,125 @@ mutation NewStatus($input: ChangeUserStatusInput!) {
 
 ---
 
-_To be continued..._
+
+### Module 4 - Why GraphQL?
+
+##### Declarative Data Fetching. Benefits:
+* Avoid round-trips to fetch data
+* No more over-fetching or under-fetching of data
+* You specify exactly what you need and you get exactly what you want
+
+##### Strongly Typed Schema
+* GraphQL is a strongly-typed language and its schema should have types for all objects that it uses
+* The schema serves as a contract between client and server
+* Relies on a query language with a type system
+* Benefits
+    * Code is predictable
+    * Front-end and back-end teams work independently
+    * Earlier detection of errors and speeds development
+    * Facilitates building high quality client tools - like GraphiQL
+
+##### Superior Developer Experience
+* GraphQL offers a lot of flexibility
+    * Teams work independently
+    * Front-end no longer has to wait for back-end team to get the APIs ready
+    * With strictly-typed schema, teams can work in parallel
+    * Front-end can continue work with mocked version of API and also test it
+* Evolve your API without versioning
+    * Add new fields and types to GraphQL API without breaking changes
+    * Provides apps continuous access to new features
+    * Developers don’t have to maintain multiple versions of the API
+* Modern Ecosystem and Tooling
+    * Tools like GraphiQL IDE provide excellent developer experience
+    * Hours of documentation time saved with in-built self-documentation in the schema
+    * Plenty of GraphQL clients for every UI framework (Apollo, Relay)
+    * Lots of server-side libraries, client libraries and services across several languages
+
+##### Cost Effective
+* Rapid product development lifecycle
+    * Multiple teams work in parallel
+    * Self documentation of API 
+    * Save money with minimal training - easy to onboard
+
+##### Growing Community
+* Ever-growing
+* GraphQL Facebook group - preferred venue for major announcements
+* #GraphQL, @GraphQL
+* StackOverflow - "graphql"
+* Plenty of GraphQL conferences, meetups spread out across the globe
+* Apollo platform and community - their blog is a great resource
+* graphql.org/community
+
+---
+
+### Module 5 - GraphQL Ecosystem and Tooling
+GraphQL is a specification that is language agnostic
+* GraphQL Client - Layer that takes care of talking to the server and getting the response back
+* GraphQL Server - Layer that takes care of creation of API and handling requests from clients and responding
+
+##### What can a GraphQL Client do?
+* Handles sending requests(queries) to the server and receiving the response(JSON) from the server
+* Integrates with your view components and updates the UI
+* Caching Query Results
+* Error handling and schema validation of queries the client wants to send
+* Local state management and caching
+* Pagination
+
+##### Popular GraphQL clients
+* Apollo - most popular. Works with many clients. Go-to client. 
+* Relay - developed by Facebook. Only works for React. 
+
+##### What can a GraphQL Server do?
+* Receives the query from the client and responds back. 
+* Here’s where the real work is done. 
+* Schema and Resolver Functions
+    * Resolvers - Resolver Function is a function that resolves a value for a type/field in the GraphQL Schema 
+* Network Layer - the queries from the client need to be transported to the server over HTTPS
+* GraphQL Execution Engine
+    * Parses query from client
+    * Validate schema
+    * Returns JSON response
+    * GraphQL has an execution algorithm
+        * Executes resolves for each field and puts them together
+    * Batched Resolving
+
+##### Popular GraphQL server libraries
+* Apollo Server 
+* Express GraphQL - works well with GraphQL
+* GraphQL Yoga 
+
+##### Database to GraphQL Server
+* Prisma - bridges the gap between GraphQL server and the databases
+* Supports both SQL and NoSQL
+* Replaces traditional ORMs and simplifies database workflows
+* Data access layer that makes it easy for API server to talk to DB through Prisma
+* Type-safe database access
+* GraphQL subscriptions
+* Powerful visual data management available with Prisma admin
+* Compatible with several back-end languages
+
+##### Tools
+* GraphiQL
+    * An in-browser IDE for writing, validating and testing GraphQL queries
+    * Write queries to retrieve data
+    * Perform mutations
+    * Live syntax and validation errors highlighted
+* GraphQL Voyager
+    * Represents any GraphQL API as an interactive graph
+    * Perfect to explore complex GraphQL APIs
+    * Great tool during design of data model
+* GraphQL Faker
+    * Mock your API with realistic data from faker.js
+    * No additional coding required
+    * Useful for testing and coding against future APIs
+* GraphQL Visual Editor
+    * Create schemas by joining visual blocks
+    * GraphQL editor transforms them into code
+    * Perfect to understand any GraphQL schema
+
+Best time to start working on GraphQL due to the prolific community
+
+---
 
 
  
