@@ -122,8 +122,66 @@ Good news is that there is a growing body of tools and processes to help succeed
 
 ##### Components of a microservice
 * Microservices can consist of more than one process
-_to be continued..._
+* _TODO: insert image from Evernote_
+* There may be several different hosts and processes involved in a microservice. Conceptually they form a single microservice. 
+* The important thing is a microservice should have a clearly defined boundary and a defined public interface and its data can only be accessed via this interface. 
 
+##### Microservices are independently deployable
+* Microservices can be upgraded without their clients needing to upgrade
+* This means that you should avoid making breaking changes to the public interface. 
+* Microservice contracts
+    * Make additive changes
+        * New endpoints
+        * New properties on DTOs
+    * Introduce version 2 API
+        * Version 1 clients must still be supported
+    * Easily forgotten in development
+* Avoiding upgrade issues
+    * Team ownership of microservices
+        * Clients must ask for a new capability, then add it
+        * Then, deploy updated microservice
+        * Later, update clients to make use of the new feature
+    * Create automated tests
+        * Ensure that older clients are supported
+        * Run as part of a CI build process
+    * Beware of shared code
+        * Can result in tight coupling
+
+##### Identifying Microservice Boundaries
+* Getting it wrong can be costly - so it’s worth to spend some time 
+    * Poor performance
+    * Hard to change 
+* Start from an existing system - most likely there will be some existing modularisation
+    * Identify loosely coupled components
+    * Identify database seams (are there databases and tables that conceptually belong together?)
+    * Organise microservices around business capabilities - domain driven design
+* Domain driven design
+    * Identify “bounded contexts"
+        * Break up large domains
+        * “Ubiquitous language” and relating to one specific business case with models applicable within the bounded context
+        * Microservices do not share models
+        * e.g. OrderItem and CatalogItem 
+    * Sketch your ideas on a whiteboard
+        * Run them through real-world use cases
+        * Identify potential problems 
+* Microservice Boundary Pitfalls
+    * Don’t turn every noun into a microservice
+        * Anaemic CRUD microservices
+        * Thin wrappers around databases
+        * Logic distributed elsewhere
+    * Avoid circular dependencies
+    * Avoid chatty communications due to clusters of ms that need to constantly communicate with one another
+
+##### Summary
+* Evolving towards microservices
+* Microservices own their own data
+* Microservices may consist of multiple processes
+* Microservices should be independently deployable
+* Avoid breaking changes
+* Identify “bounded contexts” for microservice boundaries 
+* Getting boundaries right is important
+
+---
 
 
 
