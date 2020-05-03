@@ -51,8 +51,78 @@ An architectural style where autonomous, independently deployable services colla
 
 #### The Benefits of Microservices
 
-_To be continued..._
+* Small services
+    * By breaking our monolith into smaller pieces, each service can be owned by a team
+    * Much easier to understand and work on
+    * Can be rewritten
+* Technology Choice
+    * Adopt new technology
+    * Flexibility to use the right tool
+    * Standardise where it makes sense
+* Individual deployment
+    * Lower risk 
+    * Minimize downtime
+    * Frequent updates
+* Scaling
+    * Scale services individually
+    * Cost-Effective than scaling a monolith
+* Agility
+    * Adapt rapidly
+    * Easier reuse - light-weight and de-coupled
 
+##### The Challenges of Microservices
+* Developer Productivity
+    * How can we make it easy for developers to be productive working on the system?
+* Complex interactions
+    * Makes it hard to understand the system as a whole
+    * Take care to avoid inefficient, chatty communications between microservices. Easy to become less performant
+* Deployment
+    * Many microservices => you will need to automate the process
+* Monitoring
+    * We need a centralised place to check logs and monitor for problems
+
+Good news is that there is a growing body of tools and processes to help succeed with microservices and overcome the above challenges
+
+---
+
+### Module 3 - Architecting Microservices
+
+##### Overview
+* Evolving towards microservices
+* Microservices are autonomous
+* Microservices own their own data
+* Microservices are independently deployable
+* Identifying suitable microservice boundaries
+
+##### Evolving towards microservices
+* Augment a monolith
+    * Add new microservices
+* Decompose a monolith
+    * Extract microservices
+* You don’t need to start with microservices - in fact some may argue that you shouldn’t start with microservices
+    * It’s hard to get service boundaries right
+* Defining microservice responsibilities
+    * Public interface
+
+##### Microservices own their own data
+* Avoid sharing a data store - each should have its own data store. 
+* Any other microservice needing to access this data should do so via the public API exposed by the microservice that owns it
+* Limitations
+    * Database joins are not longer possible. Will have to make separate calls to dbs
+    * Can’t update data using a single transaction. Will either have to use distributed transactions which are very complex to implement or more commonly design our system to working with eventual consistency
+* Mitigating data ownership limitations
+    * Define service boundaries well
+        * Minimise the need to aggregate data
+    * Caching 
+        * Cache data owned by another microservice
+        * Improved performance
+        * Improved availability
+    * Identify “seams” in the database
+    * Duplication of data across microservices may not necessarily be a bad thing (denormalisation)
+
+##### Components of a microservice
+* Microservices can consist of more than one process
+_to be continued..._
 
 
 
