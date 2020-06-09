@@ -108,9 +108,90 @@ Project Reactor is the default Reactive library to work with for Spring WebFlux.
 
 ---
 
+
 ### Module 3 - Learning Reactive Programming with Reactor
 
-_to be continued…_
+##### Module Overview
+* Reactive Streams
+    * Interfaces
+* Project Reactor 
+    * Flux
+    * Mono
+* Setup demo
+* Demo: Flux and Mono
+* Demo: Operators
+
+##### Reactive Streams
+* Contract
+    * Asynchronous
+    * Non-blocking
+    * Backpressure
+* Standard
+    * Designed by Lightbend, Netflix, Twitter and others
+* Only concerned with the stream of data
+    * Doesn’t specify how the data can transformed (operators) 
+    * Implementors can add additional features as long as they conform to 2 parts of the spec: an API that implements the required interfaces and the Technology Compatibility Kit (TCK), a test suite to see if the libraries comply with the spec
+
+##### Core Interfaces
+* Publisher
+* Subscriber
+* Subscription
+* Processor - publishers and subscribers at the same time. Hard to use correctly and most of the time we won’t need them. 
+
+##### Publisher
+* Methods - only one 
+    * `void subscribe(Subscriber<? super T> s);`
+##### ubscriber
+* Methods
+    * `void onSubscribe(Subscription s);` - Publisher creates Subscription object and calls onSubscribe with this subscription as a response to Subscriber calling Publisher.subscribe. 
+    * `void onNext(T t);` - called by publisher to send event.  
+    * `void onError(Throwable t);` - called by publisher when there is an error and the subscription is cancelled.
+    * `void onComplete();` - called by publisher when there are not more events to send. 
+##### Subscription
+* Methods 
+    * `void request(long n);` - back pressure; called by subscriber request for events once publisher passes this subscription object to it as a response to the Publisher.subscribe called by the subscriber. 
+    * `void cancel();`
+
+##### Project Reactor
+* Default Reactive Programming library of Spring WebFlux
+* Reactor Publishers - 2 interfaces from Reactive Streams
+    * Mono - [0, 1]. It’s like the Reactive version of Java 8 Optional type. 
+    * Flux - [0 … n]. 
+* What to return?
+    * Flux for lists
+    * Mono for single objects or void
+* Subscribe method
+    * Reactor providers many version of the subscribe method. 
+    * Most important method as no data flows without calling this. 
+    * Versions
+        * `subscribe()` - no parameters. 
+        * `subscribe(Consumer<? super T> consumer)` - takes implementation of the Consumer interface to do something with each received value
+        * `subscribe(Consumer<? super T> consumer, Consumer<? super Throwable> errorConsumer)` - separate consumer in case there is an error
+        * `subscribe(Consumer<? super T> consumer, Consumer<? Super Throwable> errorConsumer, Runnable completeConsumer)` - all the above + implementation of Runnable interface to be called when the published value is processed successfully
+        * `subscribe(Consumer<? super T> consumer, Consumer<? Super Throwable> errorConsumer, Runnable completeConsumer, Consumer<? super Subscription> subscriptionConsumer)` - to do something with the subscription object. 
+
+##### Demo: include Reactor in a Maven project
+_skipped taking notes_
+
+##### Demo: Mono and Flux
+_skipped taking notes_
+
+##### Demo: Operators
+* map: transforms the items into something else using a synchronous function
+* flatMap: transforms in an async way by emitting a publisher
+* flatMapMany: converts a Mono into a Flux
+* delayElements: will delay the publishing of given elements by a delay param
+* concatWith: always returns a Flux even when the publisher is a Mono because usually concatenation results in 2 or more elements
+* merge: interleaves the values, doesn’t combine sequentially
+* zip: combines two or more publishers and combines them into one depending on the function provided
+
+##### Things to remember
+* 2 helpful appendices in Reactor docs
+    * Appendix A: which operator do I need?
+    * Appendix B: FAQ, Best practices, “how do I…?"
+* Lite Rx API Hands-on - like koans for Rx
+
+---
 
 
 
@@ -128,4 +209,3 @@ _to be continued…_
 
 
 
--- INSERT --
