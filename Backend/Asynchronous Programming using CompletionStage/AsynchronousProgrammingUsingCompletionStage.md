@@ -116,15 +116,15 @@ The “java.util.concurrent” API brings patterns to launch them in another thr
 ##### How to launch tasks in another thread?
 * Two patterns
     1. Runnable
-        3. <TODO: insert img from Evernote>
         1. Available since Java 1.
         2. It is an obsolete pattern that should not be used anymore. If found in code, replace with Executor pattern.
+        3. <TODO: insert img from Evernote>
     2. Executor
         1. The executor service pattern has been introduced in Java 5
-        3. <TODO: insert img from Evernote>
-        5. <TODO: insert img from Evernote>
         2. Also works with Runnable. You create an executor using one of the many factory methods of the executor’s factory class.
+        3. <TODO: insert img from Evernote>
         4. Also works with the Callable model.
+        5. <TODO: insert img from Evernote>
         6. One can get the result of the reading of the web page through a future object.
     * What can be done with this future object?
         * It can be queried for the returned object
