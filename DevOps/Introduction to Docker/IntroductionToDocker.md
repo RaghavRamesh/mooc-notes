@@ -85,5 +85,62 @@ Linux kernel features that Docker uses
 ---
 
 ### Features
-_to be continued…_
+#### Part 5: Creating and Executing your First Container Using Docker
+
+* `sudo docker run -it ubuntu /bin/bash`
+    * The VM that runs the Docker daemon is CentOS. 
+    * The docker registry (Docker Hub, Docker Store) is where “ubuntu” and “hello-world” comes from
+    * Specify a tag to get a specific version for the image in production
+    * When the above command runs, it first checks if the image is present locally, otherwise it pulls from the docker registry. Then it stores the image in /var/lib
+    * Behind the scenes the “run” command pulls the Docker image. The run command gives the ability to execute a command from inside of the container. 
+    * To get an interactive shell you get pass “-it” 
+* Official Docker Registries
+    * Docker Hub
+    * Docker Store
+* `$ docker run`
+    * Downloads image if it doesn’t exist locally
+    * Runs the given command 
+* The flags “I” and”t"
+    * Create an interactive session
+
+---
+
+#### Part 6: Images vs. Containers
+
+* At high level, the difference between the two is similar to the difference between an executable and a running application. 
+* Each running application is its own instance and independent of the others. 
+* The running application is also independent from executable in that changes to the app won’t impact the executable. 
+* In this analogy, the executable is like an image and the running app is like a container. 
+* An image is a template that defines how the container will look once it creates an instance. 
+
+* Images are built on the concept of layers. There is always a base layer, and there there is some number of additional layers that represent file changes. 
+* Each layer is stacked on top of the others, consisting of the differences between it and the previous layer. The union file system that we talked about in a previous lesson is used to merge the changes. 
+* `docker inspect <image-name>` - can be used to inspect the image. Shows most of the info present in the corresponding image json file present in the `/var/lib/images`
+* `docker start <container-name>` - to start a previously stopped container
+* `docker attach <container-name>` - to attach Docker to the container along with the command with which the container was initially run. 
+* Every docker run command will create a new container. Each container is independent of the other and is created based on the image contents at the time of creating the container
+
+---
+
+#### Part 7:  Images from the Dockerfile
+* Dockerfile is a text file with commands that you can use to create your own image
+* `docker container prune` - will remove all stopped containers
+* `docker rm <container name>` - to remove specific container
+* `docker images` - get all locally available images
+*  Dockerfile 
+    * FROM - allows you to se the image that you want to build on top of. Makes Docker flexible as you can use any of the community images, an image from the store, or your own base image, as the start. 
+        * “scratch” is a special barebones image. It’s not something one can run the same way we ran “hello world” or “ubuntu” images
+        * It’s meant to be used as a minimalist base. 
+    * COPY - allows copying files from host into a layer of the image. 
+        * After this command is processed, a new layer of the image is created. 
+    * CMD - default command to run when the container starts up. There should be one command instruction per Dockerfile, if there are multiple, it will use the last one. 
+* `docker build .` - looks for Dockerfile in the specified directory
+* `docker rmi <image id>` - to remove image
+* `docker build -t <repo/image name>` - to specify repo name which will also default tag it to "latest"
+    * Tags in Docker have their own structure
+* `docker run <repo name>` - runs the image you just created
+
+---
+
+_to be continued..._
 
