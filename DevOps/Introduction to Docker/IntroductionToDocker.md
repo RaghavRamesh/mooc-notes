@@ -1,7 +1,5 @@
 # Introduction to Docker - Cloud Academy course by Ben Lambert
 
----
-
 ### Introduction
 
 #### Part 1 - Course Intro
