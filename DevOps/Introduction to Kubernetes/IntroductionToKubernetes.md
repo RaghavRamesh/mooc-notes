@@ -148,4 +148,94 @@ The different methods are as follows
 
 #### Part 6 - Pods
 
+* Basic building block in K8s
+* One or more containers in a Pod
+* Pod containers all share a container network that allows any Pod to talk to any other Pod regardless of which nodes they are running on
+* One IP address per Pod
+* K8s does all the heavy-lifting to make all of the above happen
+
+##### What’s in a Pod Declaration
+Because Pods include containers, the declaration of a pod includes all of the properties that you would expect for running containers, for example with `docker run`. These include the
+* Container image
+* Container ports
+* Container restart policy
+* Resource limits
+
+##### Manifest files
+* Declare desired properties
+* Manifests can describe all kinds of resources
+* The `spec` contains resource-specific properties
+
+##### Manifests in Action
+* `kubectl create` sends manifest to K8s API Server
+* API Server does the following for Pod manifests
+    1. Select a node with sufficient resources
+    2. Schedule Pod onto node
+    3. Node pulls Pod’s container image
+    4. Starts Pod’s container
+
+##### Why Use Manifests?
+* Can check into source control
+* Easy to share
+* Easier to work with than stringing together long sequences of commands
+
+##### Demo
+* `apiVersion`: v1 is the core apiVersion containing many of the most common resources such as Pods and nodes. K8s supports many apiVersions
+* `kind`: indicates what the resource is
+* `metadata`: contains info relevant to the resource and can help identify resources
+    * Minimum metadata is `name`
+    * `name` must be unique in a namespace
+* `spec`: specification for the declared `kind` and must match what is expected by the defined `apiVersion`
+    * Essentially where all of the meat goes
+* K8s cannot update the port on a running pod, so we need to delete and recreate it
+* While deleting providing -f file will delete all resources specified in that file
+* `label`: in addition to providing meaningful identification information, labels are used to make selections
+* Quality of Service Classes
+    * K8s can schedule pods based on their resource requests. Those pods without resource requests are easier to schedule because the scheduler doesn’t need to find nodes with the requested amount of resources. It will just schedule them onto any node that isn’t under pressure or starved for resources. However, these pods will be the first to be evicted if a node becomes under pressure and needs to free up resources.
+    * That’s called best effort quality of service. BestEffort pods can also create resource contention with other pods on the same node and usually it is a good idea to set resource requests.
+    * Specifying the resource requests and limits will use the Guaranteed QoS class
+
+##### Summary
+* Pods are K8s’ basic building block
+* Declare Pods and other resources in manifest files
+* Manifest files contain `apiVersion`, `kind`, `metadata` and `spec`
+* `metadata` includes name (required) and labels (optional but recommended)
+* Pod `spec` include container names and images
+
+---
+
+#### Part 7 - Services
+
+* A Pod is inaccessible apart from other pods in the container network. Even for pods in the container network, it isn’t very convenient to access the web server as it is because pods need to find the IP address of the pod and keep track of any changes to it (remember that k8s will reschedule pods to other nodes, for e.g., if the node fails, in which case the IP will change).
+* To overcome all these challenges, there are K8s Services.
+* A Service defines networking rules for accessing Pods in the cluster and from the internet.
+* Use labels to select a group of Pods.
+* Service has a fixed IP address.
+* Distribute requests across Pods in the group to balance the load
+
+* Specify the Pod label so the Service can select the Pods with those labels
+* Service is assigned a static IP address and Port. Through this the pod can be reached within the container network and from outside of the cluster.
+
+##### Manifest
+* `apiVersion` - same as for Pod: `v1`
+* `kind` - set to ‘Service'
+* `metadata` can contain the same labels as that of the Pod since it’s related to the same application. This isn’t required but it is important to stay organised.
+* `spec`
+    * `selector`: required, define the labels to match the pods against
+    * `port`: required, refers to the value of the pod’s container port
+    * `type`: optional, defines how to actually expose the service
+        * NodePort allocates a port for the service on each node in the cluster. Usually it’s better to allow k8s to choose a port from the available ports to avoid the chance that the port you specify is already taken. That will cause the service to fail to create
+
+##### Demo
+* Cluster - IP - internal IP of the service
+* NodePort doesn’t have an external IP
+    * The allocated port for the service is commonly between 30000 and 32767
+
+##### Summary
+* Services expose Pods via a static IP address
+* NodePort Services allows access from outside the cluster
+
+---
+
+Part 8 - Multi-Container Pods
 _to be continued..._
