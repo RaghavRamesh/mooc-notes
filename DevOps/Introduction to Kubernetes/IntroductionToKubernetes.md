@@ -287,7 +287,7 @@ There is an issue with the current design for the example. Since k8s can only sc
 * Handles Pod IP changes
 * Load balancing
 
-Service Discovery Mechanisms
+##### Service Discovery Mechanisms
 1. Environment variables
     * Service addresses automatically injected in containers
     * Env vars follow naming conventions based on service name
@@ -341,5 +341,34 @@ Service Discovery Mechanisms
 ---
 
 #### Part 10 - Deployments
+* Pods should not be created directly, they should be created using higher-level abstractions like Deployments
+* Deployments represent multiple replicas of a Pod. The `spec` field contains similar fields as that of a Pod’s manifest
+* Describe a desired state that K8s needs to achieve
+* K8s master components include a Deployment Controller master component which converges actual state to the desired state
+
+##### Differences between Pod and Deployment manifests
+* `apiVersion` - `v1` vs `apps/v1`. Higher level abstractions for managing applications are in their own api group and not part of the core API.
+* `kind` is set to `Deployment` as opposed to `Pod`
+* `spec` - contains deployment specific settings like `replicas`, `selector`
+    * Contains `template` where `template.spec` exactly matches `spec` in a Pod
+    * `selector.matchLabels` should overlap with the labels declared in the pod template below
+    * `template.metadata` includes labels on the pods. Note that this metadata doesn’t need a `name` because k8s generates a unique name for each pod replica in the deployment.
+
+##### Demo
+* `kubectl scale` with `—replicas=5` is similar to editing the replicas value in the Deployment manifest and then running `k apply`
+* Replicas replicate pods, not containers inside pods.
+
+##### Summary
+* Deployments to manage Pods in each tier
+* K8s ensures actual state matches desired state
+* `kubectl scale` to scale number of replicas
+* Services seamlessly support scaling
+* Scaling is best with stateless Pods
+
+Instead of scaling arbitrarily we may want to automatically scale up our resources based on some metrics
+
+---
+
+#### Part 11 - Autoscaling
 
 _to be continued..._
