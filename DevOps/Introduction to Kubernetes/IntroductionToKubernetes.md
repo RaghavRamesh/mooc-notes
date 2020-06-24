@@ -371,4 +371,79 @@ Instead of scaling arbitrarily we may want to automatically scale up our resourc
 
 #### Part 11 - Autoscaling
 
+* Scale automatically based on CPU utilisation (or custom metrics)
+* Set target CPU along with min and max replicas
+* Target CPU is expressed as a percentage of the Pod’s CPU request
+* Min. and max. Replicas limits are respected irrespective of the metric percentage
+
+##### Metrics and CPU requests
+* Autoscaling depends on metrics being collected
+    * Metrics server is one solution for collecting metrics. There are other solutions k8s integrates with to collect metrics
+    * Several manifest files are used to deploy Metrics Server (https://github.com/kubernetes-incubator/metrics-server)
+    * We need to use the Metrics Server up and running before we can use Autoscaling.
+    * Once the metrics server is running, autoscalers can fetch the metrics using the k8s metrics API
+    * You can confirm that the metrics server is doing its thing by watching the `kubectl top pods` command. It lists the CPU and memory usage of the pods in the namespace. This command can be used to debug resource utilisation issues
+* The other thing that the autoscaler depends on is having a CPU request in the deployment’s pod spec.
+
+##### Autoscaler Manifest
+* Autoscaler a.k.a. horizontal pod auto-scaler, is just another resource in k8s
+* The `HorizontalPodAutoscaler` kind is a part of the `autoscaling/v1` api.
+* Its `spec` includes the `minReplicas` and `maxReplicas`, the `targetCPUUtilizationPercentage` field sets the avg. CPU percentage across the replicas.
+* If target CPU utilisation is 70%, k8s will reduce the no. of replicas if the CPU util goes below 63% and increase if 77%. Default tolerance is 10%.
+* The `spec` also has the `scaleTargetRef` field that identifies what it’s scaling.
+* `kubectl autoscale` command also achieves the same result
+    * `kubectl` accepts short-hand notations for resources, we can use `kubectl api-resources` for a full list of shorthand notations
+* `kubectl edit` - combines modifying, saving and applying the manifest into one command
+    * It directly edits the server-side version of the manifest file
+    * In general, it makes sense to edit the local manifest file so that the changes can be checked-in to source control
+* HPA checks about every 15 secs whether it should scale
+
+##### Summary
+* Autoscaling depends on metrics being collected
+* Pods must have CPU requests
+* `HorizontalPodAutoscaler` (hpa) is configured with target CPU, and min and max replicas
+* Once it’s created, k8s does the heavy lifting to dynamically scale the resources
+* `kubectl apply` for applying resources rather than deleting and creating
+* `kubectl edit` to edit and apply
+
+---
+
+#### Part 12 - Rolling Updates and Rollbacks
+
+##### Rollouts
+* Rollouts update Deployments
+* Any change to a Deployment’s `template` triggers a rollout
+* Different rollout strategies are available
+
+##### Rolling Updates
+* Default rollout strategy
+* Update replicas in groups rather than all-at-once
+    * This allows service to continue uninterrupted while the update is being rolled out
+* However, you need consider that during the rollout the pods will be using both the old and the new configuration and the app should gracefully handle that
+* Alternative is the recreate strategy - incurs downtime for the application
+* Scaling is not a rollout. Recall that the number of replicas is not a part of the deployment’s `template`
+* `kubectl` has commands to check, pause, resume and rollback (undo) rollouts
+
+##### Demo
+* As part of rolling update strategy, `maxSurge` and `maxUnavailable` fields control the rate at which updates are rolled out.
+    * `maxSurge` specifies how many replicas over the desired total are allowed during a rollout. A higher surge allows new pods to be created without waiting for old ones to be deleted.
+    * `maxUnavailable` controls how many old pods can be deleted without waiting for new pods to be ready. The defaults are 25%.
+    * You may want to configure them if you want to trade off the impact on availability or resource utilisation with the speed of the rollout. For e.g., you can have all the new pods start immediately but in the worse case you could have all the new pods and all the old pods consuming resources at the same time effectively doubling the resource utilisation for a short period.
+* Trigger a rollout by updated a `template` field of the deployment
+* `kubectl rollout status` streams progress updates in real time
+* `kubectl rollout pause` pauses ongoing rollout
+* `kubectl rollout resume` picks up right where it left off and goes about its business
+* `kubectl rollout undo` to rollback to the previous version
+* `kubectl rollout history` to see the previous revisions and then specify revision to rollback to with the `—to-revision` option
+
+##### Summary
+* Rollouts are triggered by Deployment `template` changes
+* Rolling update is the default rollout strategy
+* Rollouts can be paused, resumed and undone
+
+Rollouts depend on container status. K8s assumes that created containers are immediately ready and the rollout should continue. This does not work in all cases. We may need to wait for the web server to accept connections. This is where probes and init containers come into the picture.
+
+---
+
+
 _to be continued..._
