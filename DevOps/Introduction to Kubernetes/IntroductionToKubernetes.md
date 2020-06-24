@@ -237,5 +237,109 @@ Because Pods include containers, the declaration of a pod includes all of the pr
 
 ---
 
-Part 8 - Multi-Container Pods
+### Part 8 - Multi-Container Pods
+
+##### Agenda
+* Multi-container pods
+* Namespaces
+* Pod Logs
+
+##### Kubernetes Namespaces
+* Namespaces separate resources according to users, environments or applications
+* Role-Based Access Control (RBAC) to secure access per Namespace
+* Using namespaces is a best practice
+
+##### Namespace Manifest
+* Namespaces don’t require a `spec`. The main thing is the `metadata.name`.
+* It’s a good idea to label it as well
+* The `kind` is `Namespace`
+* Create namespace via `kubectl create namespace` or using `kubectl apply -f <manifest file>`
+* When running `kubectl` commands remember to specify the namespace using the `-n` command otherwise the `default` namespace will be applied
+* The `-n` command can be specified anytime after `kubectl` word
+
+##### Multi-Container Manifest
+* Don’t mention the namespace in the other resource manifests as it makes those manifests less portable because the provided namespace can’t be overridden at the command line
+* Not a good idea to put the “latest” tag in the `containers[x].image` as k8s may pull the latest new version of the image without you realising it which may not be compatible with the rest of your application
+* To prevent always pulling an image and using an existing image if present you can set the `imagePullPolicy` to `IfNotPresent`. Useful to know this but you’re better of using the specific version of the image.
+* When the specific tags are used, the `imagePullPolicy` is set to `IfNotPresent` by default
+* To talk to other containers within the pod, use the env vars to configure the host (localhost) and the port
+* Containers within a pod share the same IP address and so they can reach one another using the localhost and with the container specific port
+
+##### Logs
+* `kubectl logs`
+* `-f` to follow logs real time
+* `—tail` to specify number of lines from the last at the point the command is entered
+
+There is an issue with the current design for the example. Since k8s can only scale at a Pod level and not at a container level, if you want to scale up one of the containers you will end up scaling up the containers like the Redis container which means each Redis container will maintain its own counter value which is not desirable. So a better design would be to break apart the application into multiple Pods and connecting them to each other using Services. Having said that, it does make sense to sometimes include multiple containers in a Pod - it comes down to how tightly coupled the containers are and if it makes sense to think of them as a single unit.
+
+##### Summary
+* Containers communicate over localhost within a Pod
+* `kubectl logs` for logs
+* Logs record what’s written to standard output and standard error
+
+---
+
+#### Part 9 - Service Discovery
+
+##### Why Services?
+* Supports multi-Pod design
+* Provides static endpoint for each tier
+* Handles Pod IP changes
+* Load balancing
+
+Service Discovery Mechanisms
+1. Environment variables
+    * Service addresses automatically injected in containers
+    * Env vars follow naming conventions based on service name
+2. DNS
+    * DNS records automatically created in cluster’s DNS
+    * Containers automatically configured to query cluster DNS
+
+##### Demo
+* The yaml file allows us to create multiple resource manifests in a single file by separating them with a line that contains 3 hyphens.
+* It’s possible to cram all resource manifests into a single file but grouping the manifests as tiers like data tier, support tier, etc. enables us manage them tier by tier.
+* Use labels to group resources together
+* For a service to select using a label, the label should be specified in a Pod
+* In Service, `port.name` field is required to distinguish between different ports. But optional if there is only 1 port
+* `ClusterIP` is the default Service type and so `type` is optional if the intended service type is `ClusterIP`
+    * It creates a virtual IP inside the cluster for internal access only
+* The resources are created in the order they are specified in the manifest file
+
+##### Environment Variables for Service Discovery
+* In the Pod manifest the value for the host and port take the following convention
+    * IP address: <all_caps_service_name>_SERVICE_HOST. (Hyphens in service name replaced by “_”)
+    * Port: <all_caps_service_name>_SERVICE_PORT
+    * Named port: <all_caps_service_name>_SERVICE_PORT_<all_caps_port_name>
+    * For e.g.,
+        * `name: REDIS_URL`
+        * `value: redis://$(DATA_TIER_SERVICE_HOST):$(DATA_TIER_SERVICE_PORT_REDIS)`
+* When using environment variables in the value field need to enclose them in parentheses and precede it with “$"
+* In order to use env vars created by k8s for service discovery, the Service must be created before the Pod.
+* K8s doesn’t update env vars of running containers, they only get set at startup.
+* The service should also be in the same namespace for the env vars to be available
+
+##### DNS for Service Discovery
+* K8s will add DNS A records for every service
+* Naming convention is as follows:
+    * IP address: <service_name>.<service_namespace>. No need to convert hyphens to underscores or all caps when using DNS for service discovery
+    * Port: needs to be extracted from SRV DNS record and that isn’t something we can use in the manifest so we either have to hard-code the port information or use the *SERVICE_PORT env var
+    * However, if the service is in the same namespace, then you can simply use the service name
+    * For e.g.,
+        * `name: API_URL`
+        * `value: http://app-tier.service-discovery:8080`
+    * The cluster DNS resolves the DNS name to the service IP address.
+* It is possible to use the DNS SRV port record to configure the pod on startup using initContainers.
+
+##### Summary
+* Services for N-tier applications
+* ClusterIP Service for internal-only access
+* Environment variables and DNS allow Pods to discover Services
+* Environment variables for Services available at Pod creation time and the same Namespace
+* DNS dynamically updated and across Namespaces. They overcome the shortcomings of env vars. DNS records are added and deleted from the cluster’s DNS as services are added and deleted. The DNS names allow communication with services in other namespaces.
+* SRV DNS records are created for service port information.
+
+---
+
+#### Part 10 - Deployments
+
 _to be continued..._
