@@ -496,4 +496,197 @@ Probes kick in after containers are started. If you need to start or prepare thi
 
 #### Part 14 - Init Containers
 
-_to be continued..._
+##### Motivation for Init Containers
+* Sometimes you need to perform tasks to check for pre-reqs before a main container can start - e.g., waiting for a service to be created, etc.
+* The code that performs that could be crammed into the main container image but it’s better to separate the initialisation wait logic from the container image
+* Initialisation is tightly coupled to the main application and so belongs in the Pod
+* Init containers allow you to run initialisation tasks before starting the main containers.
+
+##### Init containers
+* Pods can declare any number of init containers
+* Init containers run in order and to completion. Then the main containers in the Pod can start
+* Init containers can use their own images different from that of the main container
+* Easy way to block or delay starting an application until some preconditions are met. They are similar to readiness probes in that sense but they are only run at Pod startup and can perform other useful work
+* All the above features make init containers a vital part of the k8s toolbox
+* They are run every time a Pod is created. They are run once for every replica in a deployment. If the Pod restarts due to a failed liveness probe, the init containers would run again as part of the restart. Thus you have to assume that init containers run at least once. Thus you have to ensure init containers are idempotent
+
+##### Demo
+* E.g. use case of init container - add an init container to our app tier that will wait for Redis before starting any application servers
+* Init containers have the same fields as regular containers except for `readinessProbe` because they must run to completion before the state of the Pod can be considered ready.
+
+##### Summary
+* Init containers allow you to perform tasks before main application containers have an opportunity to start
+* Useful for checking preconditions and preparing dependencies
+
+---
+
+#### Part 15 - Volumes
+
+* Containers in a Pod share the same network stack but each has its own file system
+* Sometimes useful to share data between containers in a Pod
+* Lifetime of container file systems is limited to the container’s lifetime
+* Can lead to unexpected consequences if a container restarts
+
+##### Agenda
+* How to handle non-ephemeral data - allowing us to separate data from containers
+* Deploy a persistent data tier
+* Options available for storing data
+
+##### Options available for storing data
+* 2 high-level storage options: Volumes and Persistent Volumes
+* Used by mounting a directory in one or more containers in a Pod
+* Pods can use multiple Volumes and Persistent Volumes
+* Difference between Volumes and Persistent Volumes is how their lifetime is managed - one depends on lifetime of a particular Pod and the other is independent of the lifetime of Pods.
+
+##### Volumes
+* Volumes are tied to a Pod and their lifecycle
+* Share data between containers in a Pod and tolerate container restarts
+* Although technically possible, consider using Volumes for non-durable storage that is deleted with the Pod
+* Default Volume type is `emptyDir` - creates an initially empty directory on the node running the Pod to back the storage used by the Volume.
+* Any data written to the directory remains if a container in the Pod is restarted.
+* Once the Pod is deleted, the data in the Volume is permanently deleted.
+* Note that since the data is stored in a specific node, if a node is rescheduled to a different node, the data will be lost.
+* If the data is too valuable to lose when a Pod is deleted or rescheduled you should consider using Persistent Volumes
+
+##### Persistent Volumes
+* Independent of Pod’s lifetime and are separately managed by K8s
+* Pods must claim Persistent Volumes to use throughout their lifetime
+* Persistent Volumes will continue to exist outside of their pods. They will continue to exist after the Pods that have claimed them have been deleted.
+* Can be mounted by multiple Pods on different Nodes if underlying storage supports it
+* Can be provisioned statically in advance by the cluster admin or dynamically on-demand for more flexible self-serve use cases
+Pods must make a request for storage before they can use a persistent volume
+
+##### Persistent Volume Claims
+* Describe a Pod’s request for Persistent Volume storage
+* Includes how much storage, type of storage, and access mode
+* Access mode can be read-write once, read-only many or read-write many.
+* PVC stays pending if no PV can satisfy it and dynamic provisioning is not enabled
+* Connects to a Pod through Volume of type PVC
+
+##### Storage Volume Types
+* Wide variety of volume types to choose from
+* Use PVs for more durable storage types
+* Supported durable storage include GCE Persistent Disks, Azure Disks, Amazon EBS, NFS and iSCSI
+
+##### Demo
+* Deployment, PV and PVC manifests are typically in a single file as they go together
+* `accessMode` can only be one of the 3 modes
+* The PVC spec outlines what it is looking for in a PV.
+* For a PV to be bound to a PVC, it must satisfy all the constraints in the claim.
+* Specify `volume` in deployment manifest with the `persistentVolumeClaim.claimName` corresponding to the PVC name
+* The `volumeMounts[x].mountPath` in the deployment `spec` can be different for different containers even if the volume is the same
+* To confirm the claims request is satisfied by the PV, `Status: Bound` is present in the describe output.
+
+##### Summary
+* PVs are independent of the lifecycle of the Pods
+* `kubectl exec` runs commands in Pod containers
+
+---
+
+#### Part 16 - ConfigMaps and Secrets
+
+##### Motivation for ConfigMaps and Secrets
+* Until now all container configuration has been in the Pod spec
+* This makes it less portable than it could be
+* If sensitive information such as API keys and passwords is involved it presents a security issue
+
+##### ConfigMaps and Secrets
+* Separate configuration from Pod specs
+* Results in easier to manage and more portable manifests
+* Both are similar but Secrets are specifically for sensitive data
+* Secrets reduce the risk of their data being exposed. However, the cluster administrator also needs to ensure that all the proper encryption and access control safeguards are in place
+* There are specialised types of Secrets for storing Docker registry credentials and TLS certs
+* We will focus on generic secrets
+
+##### Using ConfigMaps and Secrets
+* Data stored in key-value pairs
+* Pods must reference ConfigMaps and Secrets to use their data
+* References can be made by mounting Volumes or setting environment variables
+
+##### Demo
+* ConfigMap
+    * `kind: ConfigMap`
+    * There is no `spec`. Only a `data` field with a single `config` key. More than 1 key value pair for `data` is possible
+    * Reference the above config map as a volume in deployment -  `spec.volumes[x].configMap`. You can access specific key value pairs defined in the ConfigMap
+        * Then specify the volume under `volumeMounts` in the necessary container
+    * Config values can be dynamically changed and they will be picked up by k8s and the mounted volumes will be updated
+    * Since the deployment’s `template` is not updated, it does not trigger a rollout though. To do this use the `kubectl rollout restart` to restart the appropriate deployment
+* Secret
+    * `kind: Secret`
+    * Along with `data`, there is a `stringData` field available in Secrets.
+    * K8s automatically decodes the base64 encoded strings when used in a container
+    * It’s encoding, not encrypting, so it doesn’t provide any security. So treat the encoded strings as sensitive info as well.
+    * Don’t check-in secret manifests in source control
+    * `stringData` allows you to specify secrets without first encoding them since k8s encodes fields under `data` for you
+    * `stringData` fields are not actually stored in the api server which can be verified when you `edit` the Secret
+    * You need to restart rollout for the env vars referencing the secret to take effect
+
+##### Summary
+* ConfigMaps and Secrets separate configuration data form pod specs or what would otherwise be stored in container images
+* Both store data as key-value pairs
+* Secrets are for sensitive data
+* Referenced via Volumes or env vars
+
+---
+
+### The Kubernetes Ecosystem
+
+#### Part 17 - Kubernetes Ecosystem
+
+* Vibrant ecosystem around the core of K8s
+* Helm
+    * K8s package manager
+    * Packages are called charts and are installed on your cluster using Helm CLI
+    * Helm charts make it easy to share complete apps
+    * Search Helm Hub for public charts
+    * E.g., use pre-existing templates / charts instead of building from scratch
+* Kustomize
+    * Customise YAML manifests in K8s
+    * Helps you mange the complexity of your applications. Obvious use case is env-specific deployments
+    * Works by using a kustomization.yaml file that declares customisation rules
+    * Original manifesto are untouched and remain usable
+    * E.g. use cases
+        * Generating ConfigMaps and Secrets from files
+        * Configure common fields across multiple resources
+        * Apply patches to any field in a manifest
+        * Use overlays to customise base groups of resources
+* Prometheus
+    * Open-source monitoring and alerting system
+    * A server for pulling in time series metric data and storing it
+    * Inspired by an internal monitoring tool at Google called borgmon
+    * De facto standard solution for monitoring K8s
+    * Prom + K8s
+        * K8s components supply all their own metrics in Prom format
+            * Many more metrics than Metrics Server
+        * Adapter available to autoscale using metrics in Prom rather than CPU utilisation
+        * Commonly paired with Grafana for visualisation
+        * Define alert rules and send notifications
+        * Easily installed via Helm chart
+* Kubeflow
+    * Makes deployment of machine learning workflows on K8s simple, scalable and portable
+    * A complete ML stack
+    * Leverage K8s to deploy anywhere, autoscale, etc.
+* Knative
+    * Platform for building, deploying and managing server less workloads on K8s
+    * Can be deployed anywhere with K8s, avoiding vendor lock-in
+    * Supported by Google, IBM and SAP
+
+---
+
+### Course Conclusion
+
+#### Part 18 - Conclusion
+* What K8s is
+* K8s Architecture
+* K8s in Practice
+    * Example kubectl commands
+    * K8s terminology
+    * N-tier apps and Service discovery
+    * Deployment rollouts
+    * Monitoring containers with probes
+    * Preparing Pods with init containers
+    * Persistent data storage
+    * Separating config and sensitive data using ConfigMaps and Secrets
+* K8s Ecosystem
+
+---
