@@ -237,7 +237,7 @@ Because Pods include containers, the declaration of a pod includes all of the pr
 
 ---
 
-### Part 8 - Multi-Container Pods
+#### Part 8 - Multi-Container Pods
 
 ##### Agenda
 * Multi-container pods
@@ -445,5 +445,55 @@ Rollouts depend on container status. K8s assumes that created containers are imm
 
 ---
 
+#### Part 13 - Probes
+
+* In the previous lesson and demo, K8s assumed that a pod was ready as soon as the container started. That isn’t always true, for e.g., if the container needs time to warm up K8s should wait before sending any traffic to the new pod.
+* It’s also possible that pod is fully operational but after some time it becomes non-responsive, for example if it enters a deadlock state. K8s shouldn’t send any more requests to the pod and would be better off to start a new pod.
+* K8s provides probes to remedy both the above situations.
+* Probes are sometimes referred to as health checks.
+
+##### Readiness Probes
+* Used to check when Pod is ready to serve traffic / handle requests
+* Useful after startup to check external dependencies
+* Readiness Probes set the pod’s ready condition. Services only send traffic to ready Pods
+
+##### Liveness Probes
+* Detect when Pod enters a broken state and no longer serve requests
+* Kubernetes will restart the Pod for you - key difference between readiness and liveness probes. We have to decide which to use for what based on what course of action we want k8s to take
+* Declared in the same way as readiness probes
+* Common situation: containers may be live but not ready
+
+##### Declaring Probes
+* Probes can be declared in a Pod’s containers
+* All container probes must pass for the Pod to pass
+* Probe actions can be a command that runs in the container, an HTTP GET request, or opening a TCP socket
+    * HTTP request is considered successful if response code is [200,399]
+    * TCP request is considered successful if a connection can be established
+* By default probes check containers every 10 seconds
+
+##### Demo
+* Data Tier (Redis)
+    * Liveness: Open TCP socket
+    * Readiness: `redis-cli ping` command
+    * Container may be live but not yet ready
+* App Tier (Server)
+    * L: HTTP GET /probe/liveness
+    * R: HTTP GET /probe/readiness
+* By default 3 sequential probes should fail - so there is some buffer bulit-in. K8s won’t immediately restart if the first probe fails
+* `initialDelaySeconds` for first probe. In general, use a higher delay for liveness probe than readiness probe
+* Types of probes: `tcpSocket`, `httpGet`, `exec` and `exec.command`
+* If things go awry, you can use a combination of `describe` and the `logs` command to debug what’s wrong
+* Unfortunately, failed probe events don’t show in the events output in describe, but you can use the pod restart count as an indicator of failed liveness probes
+
+##### Summary
+* Container readiness probes monitor when Pods are ready to serve traffic and are temporarily out of service
+* Container liveness probes monitor when Pods have entered a broken state and should be restarted
+* Probe actions include commands, HTTP GET requests, and opening TCP sockets
+
+Probes kick in after containers are started. If you need to start or prepare things before the container starts there is a way to do that as well - init containers.
+
+---
+
+#### Part 14 - Init Containers
 
 _to be continued..._
