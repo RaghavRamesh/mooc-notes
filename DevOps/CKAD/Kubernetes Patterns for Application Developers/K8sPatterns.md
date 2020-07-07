@@ -65,6 +65,60 @@
 ---
 
 ### Part 3 - Networking
+#### Agenda
+* Networking basics
+* Services
+* Network Policy
+
+#### Networking Basics
+* Pods
+    * Each Pod is assigned 1 unique IP in the cluster
+    * Containers in the Pod share the same IP and can communicate to each other over localhost
+    * Pods are schedule onto Nodes and any Node can reach the Pod using the Pod’s IP address
+    * Other Pods located in other Nodes can do the same. This depends on the networking plugin used
+    * But Pods are ephemeral and they can be killed and can come back up with different IPs. Can’t rely on a single Pod IP to rely on replication. This is were Services come in. 
+
+#### Services
+* Services maintain a logical set of Pod replicas using labels. Pod replicas may be spread over many nodes. 
+* The service maintains a list of endpoints as Pods are added and removed from the set. 
+* Clients only need to know the IP address of a Service. 
+
+##### Service Discovery
+* Pods can discovery services via env vars as long as the pod was created after the service. 
+* Or by adding the DNS add-on in the cluster. 
+* The DNS can resolve the service name or the namespace qualified service name to the IP associated with the service. 
+
+##### Types of Services
+* ClusterIP
+    * The IP assigned the service is called the Cluster IP. It’s the most basic type of service. 
+    * The Cluster IP is only reachable within the cluster. 
+    * The kube-proxy component that runs on each node is responsible for proxying requests to one of the service’s endpoints.
+* NodePort
+    * Other types of services allow clients outside the service to connect to the service. 
+    * First such service type is call NodePort. NodePort causes a given port to be opened on every node in the cluster. The Cluster IP is still given to the service. Any request to any node to that port is routed to the cluster IP. 
+* LoadBalancer
+    * Allows external access. Exposes the service externally through a cloud provider’s load balancer. 
+    * The load balancer type also creates a cluster IP and node port for the service. 
+    * Requests to the load balancer are sent to the node port and routed to the cluster IP. 
+    * Different features of cloud provider load balancers such as connection draining and health checks are configured using annotations on the load balancer. 
+* External name
+    * It is different in that it is enabled by DNS, not proxying. 
+    * You can configure an external name service with the DNS name and requests for the service return a CNAMe record with the external DNS name. This can be used for services running outside of K8s, such as a database as a service offering.
+
+#### Kubernetes Network Policy
+* Rules for controlling network access to Pods
+* Similar to security groups controlling access to virtual machines
+* Scoped to Namespace
+
+##### Network Policy Caveat
+* K8s network plugin must support Network Policy. Otherwise there will be nothing to enforce the created network policies. 
+* You might think that you have secured access to the application but the pods are actually still open for requests from anywhere. 
+* The Pods can be created successfully with no error message. 
+* The cluster admin can tell if your cluster supports network policy or not. 
+* E.g., Calico, Romana are plugins that support Network Policy
+
+_to be continued..._
+
 
 ---
 
