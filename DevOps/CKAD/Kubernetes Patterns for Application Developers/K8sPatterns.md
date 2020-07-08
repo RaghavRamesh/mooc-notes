@@ -117,7 +117,27 @@
 * The cluster admin can tell if your cluster supports network policy or not. 
 * E.g., Calico, Romana are plugins that support Network Policy
 
-_to be continued..._
+##### Isolated and Non-isolated Pods
+* A Pod that is non-isolated allows traffic from any source. This is the default behaviour. 
+* Once a Pod is selected by a network policy it becomes isolated. 
+* The pods are selected using labels which are the core grouping primitive in Kubernetes. 
+
+##### Network Policy Manifest
+* Network policies are included in the networking API. 
+* `spec`
+    * `podSelector` : if this is empty, the policy will apply to all pods in the namespace. Use `matchLabels.app` to specify label
+    * `policyTypes` list: acceptable values are `Ingress` (indicates the policy applies to incoming traffic) and `Egress` (policy applies to outgoing traffic)
+        * You can include one or both. 
+        * If you included only Egress, then all Ingress traffic is allowed by the policy.
+    * Corresponding to the `Ingress` policy type is the `ingress` list which specifies rules for where the traffic is allowed from. 
+        * Each rules includes a from list specifying the sources and ports list specifying the allowed ports. 
+        * If the from list is avoided, then all sources are allowed. If the ports list is avoided then traffic on all ports are allowed.
+        * Supports `podSelector`, `namespaceSelector` and `ipBlock`
+* Use the `describe` command to understand what the network policy is doing. 
+* If needed can use ipBlock which allows you to specify a white list of IPs using `cidr` (say, `0.0.0.0/0` => all IPs) and then a black list within that white list using the `except` list. 
+    * Usually you should use labels for selecting pods because Pods are ephemeral and IP addresses will change. 
+* Network policies when combined may result in unintuitive behaviour
+    * Say there are two policies, one blocks from a pod and another allows, then when combined, the pod will not be blockedj
 
 
 ---
