@@ -147,5 +147,68 @@ _skipped_
 
 ---
 
+#### Part 8: Images from Containers
+
+* The Dockerfile isn’t the only way to create an image.
+* You can also use the docker commit command to commit changes that you’ve made to an existing container. The recommended way is to use Dockerfile though because you get treat that image as code which means you can check it into source control, share it with other developers and you can use it in automated testing to build the image, etc.
+* Example
+    * Run an ubuntu image
+    * Install Python
+    * Convert this change to the container into an image using: `docker commit <container-id> ubuntu_python`
+    * We need to set the default command so that when this image is run using docker run. So in this case it will run bash and then exit because that was the default command for ubuntu
+    * So remove that image ubuntu_python and start over
+    * `docker commit —change=‘CMD [“python”, “-c”, “import this”]’ <container-id> <tag-name>`
+    * Create container using `docker run ubuntu_python` (the tag name specified above)
+
+---
+
+#### Part 9: Port Mapping
+
+##### Example
+* Go web app program with 2 endpoints
+* Runs on port 8080 and serves some markup
+* Run a container in the background using the -d flag
+* Fetch the IP address of the container using the `docker inspect`
+
+* You can either interact with the container by talking to its IP and its port or you can bind it to a port on the host running the container, a.k.a., port mapping
+* Docker allows you to do this dynamically or explicitly. The Dockerfile specifies that the container exposes 8080. By default, the expose instruction doesn’t do anything to the host.
+* Docker lets you bind the container port to a host port with the publish or publish all flags. Publish all will dynamically map the exposed ports of the container to open ports on the host.
+* The -P flag is the short form of publish all. `docker run -d -P webapp`. # 0.0.0.0:32768->8080/tcp. Which means the container binds the web app to port 32768 of the host and that means curling localhost:32768 will return some HTML.
+* Use the -p flag (publish) to specify port on the host to bind.
+    * `docker run -d -p 3000:8080 webapp`. <hostport>:<containerport>
+    * Running the same command again will fail because only one process can be bound to a port at the same time.
+
+---
+
+#### Part 10 - Networking
+
+##### Example
+* Base image Ubuntu 16.04 and add some networking tools on top using RUN instruction
+* `docker network ls`: shows existing networks. 3 listed. Default by Docker. Scope of this lesson is to cover these 3.
+
+##### Bridge
+* Bridge network is the default.
+* Whenever you start up a new container and don’t specify a network, it’s going to use the default bridge network.
+* Run `ip addr show` to list of interfaces
+* You can detach from a running container that you’ve shelled into without stopping it by using “Ctrl+p Ctrl+q"
+* Run 3 such containers and run the arp scan command to notice that the 3 containers are present in the same network and have access to each other as well as the outside world (pinging google.com works)
+
+##### Host
+* Adds the container to the host’s networking.
+* Happens when you bind a port of the container to the host.
+* Has no isolation between the host and the container.
+* `docker run -d —network=host ubuntu_networking /webapp`
+* `docker inspect <container>`
+* It will not have an IP because it’s bound to the host
+* In host networking whatever ports you open up on the container is going to be bound to the host. So you can directly query localhost:8080 in the host and it will have been bound to the container’s 8080 port and serve the content from the server running in that port.
+
+##### None
+* As the name suggests, there’s no network at all, completely isolated
+* `docker run -it —network=none ubuntu_networking`
+* If you list the network interfaces `ip addr show`, you’ll only see the loopback interface.
+* Pinging google.com will fail
+
+---
+
 _to be continued..._
 
