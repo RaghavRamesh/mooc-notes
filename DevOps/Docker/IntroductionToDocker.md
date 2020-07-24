@@ -210,5 +210,46 @@ _skipped_
 
 ---
 
+#### Part 11 - Introduction to Persistent Storage Options in Docker
+
+* The last layer of the image is a writable layer, which means apps that need write access will work just fine.
+* However, as soon as you stop the container, whatever you’ve written there is gone, which means the writable layer is not an effective way to handle persistent storage
+* There are 3 options for persistent storage provided by Docker
+    1. Bind mounts
+    2. Volumes
+    3. In-memory Storage (tmpfs)
+
+##### Bind mounts
+* They have been around for a while
+* They work by mounting a file or directory that resides on the host, inside the container
+* Remains an effective mechanism that allows you to access files from the host inside the container.
+* Once the container stops, the data remains because it lives on the host
+* Downsides
+    * They aren’t as decoupled from the hosts as you might like
+    * Need to know the exact path on the host that you want to mount in the container
+* Upside
+    * The upside is that this could work well for development, because you don’t need to rebuild the image to access the new source code, so you make changes to your source and it reflects immediately
+    * This is how Docker provides DNS resolution to containers by default by mounting /etc/resolv.conf from the host machine to each container
+    * Sharing src code or build artifacts. For e.g., mounting the target/ directory into a container and each time you build the Maven project on the Docker host, the container gets access to the rebuilt artifacts
+    * If you use Dockerfile for development this way, your production Dockerfile would copy the production-ready artifacts directly into the image, rather than relying on a bind mount
+    * When the file or directory structure of the Docker host is guaranteed to be consistent with the bind mounts the containers require
+* Use cases
+    * Sharing config files from host machine to the containers
+* However, the preferred way to handle persistent file storage is with volumes.
+
+##### Volumes
+* Volumes are basically bind mounts except that Docker manages the storage on the host
+* So you don’t need to know the fully qualified path to a file or directory
+* This makes it easier when working cross platform, because Docker handles the volume
+* They aren’t limited to the host file system either, they allow you to use different drivers
+* The drivers support the use of external storage mechanisms like Amazon’s S3, Google Cloud Storage and more.
+* When you stop a container using volumes or bind mounts, the data remains on the host.
+* In contrast, the 3rd storage options, tmpfs, is different.
+
+##### Temp FS
+* It’s a temporary file system, an in-memory file system
+* From inside the container, you still interact with the files the same way you would any other file
+* The difference is that tmpfs is not persistent because tmpfs allows file system access for the life of the running container, it’s commonly used to hold sensitive information, that includes things like access tokens.
+
 _to be continued..._
 
