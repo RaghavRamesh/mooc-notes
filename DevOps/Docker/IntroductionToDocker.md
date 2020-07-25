@@ -236,6 +236,9 @@ _skipped_
 * Use cases
     * Sharing config files from host machine to the containers
 * However, the preferred way to handle persistent file storage is with volumes.
+* `docker run -it —mount type=bind.src=“/var/logs/demo”.dst=“/logs/myapp” scratch_volume`
+* `docker volume ls` will return nothing because you are managing the volume not docker
+* Run multiple such containers and you’ll see the logs in the host in the src location
 
 ##### Volumes
 * Volumes are basically bind mounts except that Docker manages the storage on the host
@@ -245,11 +248,86 @@ _skipped_
 * The drivers support the use of external storage mechanisms like Amazon’s S3, Google Cloud Storage and more.
 * When you stop a container using volumes or bind mounts, the data remains on the host.
 * In contrast, the 3rd storage options, tmpfs, is different.
+* `docker run -it —mount type=volume.src=“logs”.dst=“/logs/myapp” scratch_volume`
+* `docker volume ls` will return the location of the volume in the host machine
+* Run multiple such containers and you’ll see the logs in the host in the src location
 
 ##### Temp FS
 * It’s a temporary file system, an in-memory file system
 * From inside the container, you still interact with the files the same way you would any other file
 * The difference is that tmpfs is not persistent because tmpfs allows file system access for the life of the running container, it’s commonly used to hold sensitive information, that includes things like access tokens.
+* `docker run -it —mount type=tmpfs.dst=/logs ubuntu`
+* No need to specify the src location because tmpfs is not persistent storage and nothing on the host is going to persist the data
+* Write temporary data to the /logs directory
+* The data is available in the location inside the container until the container is running
+* Once stopped the data disappears. So when you stop and start the container, the data won’t be there.
+* This type of volume is useful for storing sensitive information
 
-_to be continued..._
+When in doubt on which volume type to use, use Volumes
 
+---
+
+#### Part 12 - Tagging
+
+* Tags provide a way to identify specific versions of an image
+* Tags make it easy to deploy a specific version and then if something goes wrong, you can easily roll back to the previous version
+* One of the useful features of tags is that an image can have more than one tag.
+* This is useful if you want to have version numbers as well as named versions.
+* Tags are versatile and are an important mechanism for a solid continuous delivery process
+
+##### How to tag an image?
+* You can specify a registry name. If you don’t Docker assumes you want to use its registry by default
+* `docker build -t “tag_demo” .`
+    * `Successfully tagged as tag_demo:latest`
+    * We only provided the image name, so Docker provided the tag of “latest” automatically
+* `docker tag tag_demo:latest tag_demo:v1`
+    * To set the tag of that image to "v1"
+    * `docker images` when you list the images, you will see two entries with the same id one with latest and another with v1 tag. They are just different ways to reference them.
+    * If I run `docker run tag_demo` with the image without specifying the tag, it will use the image with “latest” tag by default
+    * `docker run tag_demo:v1`. Both these statements are the same for this case.
+* Make a change to the image and `docker build -t tag_demo:v2 .`
+    * `Successfully tagged as tag_demo:v2`
+    * `docker images` will list an image with v2 tag with a different image id.
+* `docker run tag_demo:latest`
+    * The current latest tag still refers to v1 because we explicitly set the tag of v2 image as v2.
+    * `docker tag tag_demo:v2 tag_demo:latest` - now ids will match v2 and latest
+* It’s considered a best practice to specify version tags while using an image in your Dockerfile
+
+##### How to push an image to Docker Hub?
+* `docker push tag_demo`
+    * Throws an error because not yet logged in
+* `docker login` after you have created an account with Docker Hub
+* `docker push tag_demo:latest`
+    * Throws an error because cannot just upload an image with whatever name we want. Need to tag the image with username.
+* `docker tag tag_demo:latest sowhelmed/tag_demo:latest`
+* `docker images` will have same image id as `tag_demo`
+* `docker push sowhelmed/tag_demo`
+    * Successfully pushed image to Docker Hub under your username.
+    * Anyone now can pull the image you’ve pushed.
+* Pulling an image with `latest` tag doesn’t automatically mean you get the latest version as we have seen above unless image author explicitly sets the latest version of the image with the `latest` tag.
+
+---
+
+### Summary
+
+#### Part 13 - Summary
+
+1. What is Docker?
+2. Docker Architecture
+3. Installation
+4. Creating Containers
+5. Images vs. Containers
+6. Images from the Dockerfile
+7. Images from Containers (`docker commit`)
+    * Best practices for creating images
+        * Keep the image as small as possible
+        * Use official public images as base images
+        * Ensure images have one purpose
+        * Reduce the number of layers
+8. Port Mapping
+9. Networking - Bridge, Host, None
+10. Volumes - Bind, Volume (recommended), TempFS
+11. Tagging
+12. Summary
+
+----
