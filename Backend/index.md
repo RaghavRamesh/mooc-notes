@@ -3,7 +3,7 @@
 - [Elasticsearch](https://raghavramesh.github.io/mooc-notes/Backend/Elasticsearch/Sharding.html)
 - [GraphQL](https://raghavramesh.github.io/mooc-notes/Backend/GraphQL/GraphQL.html)
 - Java
-  - [Asynchronous Programming using CompletionStage](https://raghavramesh.github.io/mooc-notes/Backend/Java/AsynchronousProgramming/AsynchronousProgrammingUsingCompletionStage.html)
+  - [Asynchronous Programming using CompletionStage](https://raghavramesh.github.io/mooc-notes/Backend/Java/AsyncProgramming/AsyncProgramming.html)
   - [Multi-Threading](https://raghavramesh.github.io/mooc-notes/Backend/Java/Multi-Threading/Multi-Threading.html)
   - [Setting Up a Java Environment](https://raghavramesh.github.io/mooc-notes/Backend/Java/SettingUpAJavaEnvironment/SettingUpAJavaEnvironment.html)
   - [Spring Boot](https://raghavramesh.github.io/mooc-notes/Backend/Java/SpringBoot/SpringBootFundamentals.html)
