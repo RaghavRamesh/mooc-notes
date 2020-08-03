@@ -82,4 +82,55 @@
 
 ### Part 3 - Architecture: Networking
 
+#### Agenda
+* Overlay networks
+* Service discovery
+* Load balancing
+* External access
+
+#### Networking
+* Unlike a single container, the networking needs in Swarm mode are much more complex
+* In swarm mode, services need to communicate with one another and the replicas of the service can be spread across multiple nodes
+
+#### Overlay Networks
+* Multi-host networking in swarm is natively supported with the overlay driver
+* No need to perform any external configuration
+* You can attach a service to one ore more overlay networks
+* Overlay networks only apply to swarm services
+* Managers automatically extend overlay networks to nodes
+
+#### Network Isolation and Firewalls
+* Network isolation and firewall rules apply to overlay networks just as they do for bridge networks
+* Containers within a Docker network have access on all ports in the same network
+* Traffic originating inside of a Docker network and not destined for a Docker host is permitted
+* Traffic coming into a Docker network is denied by default
+#### Service Discovery
+* A service discovery mechanism is required in order to connect to the nodes running tasks for a service
+* Swarm mode has an integrated service discovery system based upon DNS
+* The same system is used when not running in swarm mode
+* The network can be an overlay spanning multiple hosts, but the same internal DNS system is used
+* All nodes in a network store corresponding DNS records for the network
+
+#### Internal Load Balancing
+* Each individual task is discoverable with a name to IP mapping in the internal DNS
+* Requests for VIP address are automatically load balanced across all the healthy tasks in the overlay network
+
+#### DNS Round Robin
+* DNS Round Robin allows you to configure the load balancing on a per service basis
+* The DNS server resolves a service name to individual task IP addresses by cycling through the list of IP addresses of the nodes
+* If you need more control, DNS RR should be used for integrating your own external load balancer
+
+#### External Access
+* In swarm mode, there are two modes for publishing ports in Swarm
+* Host mode
+    * The container port is published on the host that is running the task for a service
+    * If you have more tasks than available hosts, tasks will fail to run
+    * You can omit a host port to allow Docker to assign an available port number in the default port range of 30000-32767
+    * There isn’t load balancing unless you configure it externally
+* Ingress Mode
+    * You have the option to load balance a published port across all tasks of a service
+    * Requests are round robin load balanced across the healthy instances regardless of the node
+    * It is the default service publishing mode
+
+#### Routing Mesh
 _to be continued..._
