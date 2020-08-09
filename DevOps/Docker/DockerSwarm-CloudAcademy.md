@@ -133,4 +133,141 @@
     * It is the default service publishing mode
 
 #### Routing Mesh
-_to be continued..._
+
+#### Routing Mesh
+* The routing mesh combines an overlay network and a service virtual IP
+* When you init a swarm, the manager creates an overlay ingress network
+* Every node that joins the swarm is in the ingress network
+* When a node receives an external request it resolves the service name to a VIP
+* The IPVS load balance the request to a service replica over the ingress network
+* You can add an external load balancer on top of the load balancing provided by the routing mesh
+
+---
+
+### Part 4 - Orchestration
+
+#### Agenda
+* Service placement: which nodes service tasks are placed on
+* Update behaviour: how service updates are rolled out
+* Rollback behaviour: how services can be rolled back to a previous version
+
+#### Service placement
+* Can declare a set number of replicas (like deployment in k8s)
+* Or can be started on every worker node in a cluster as a global service (like daemon set in k8s - not entire sure about this though)
+* For replicated services, decisions need to be made by swarm managers for where service tasks will be scheduled
+* 3 ways to influence scheduling:
+    * CPU and memory reservations
+    * Placement constraints
+    * Placement preferences - influence how tasks are distributed across nodes
+* Global services can also be restricted to a subset of nodes with these conditions
+* A node will never have more than one task for a global service
+
+---
+
+### Part 5 - Consistency
+
+#### Agenda
+* Consistency
+* Raft
+* Tradeoffs
+
+A Swarm can have several managers and worker nodes. If so how can consistency be ensured?
+* All managers share a consistent internal state of then entire swarm
+* Workers do not share a view of the entire swarm
+* Managers maintain a consistent view of the state of the cluster by using a consensus algorithm
+
+#### Raft Consensus
+* Raft achieves consensus by electing one manager as the leader
+* The elected leader makes the decisions for changing the state of the cluster
+* The leader accepts new service requests and service updates and how to schedule tasks
+* Decisions are acted only when there is a quorum
+* Raft allows for (N-1)/2 fails and the swarm can continue operating
+* If more managers fail, the cluster state would freeze (no new scheduling decisions are made)
+* The first manager is automatically the leader
+* If the current leader fails, a new leader is elected
+
+#### Manager tradeoffs
+* More managers => more failure tolerance but there are tradeoffs
+* More managers increase the amount of managerial traffic required for maintaining a consistent view of the cluster and the time to achieve consensus
+* Manager best practices:
+    * You  should have an odd number of managers
+    * A single manager swarm is acceptable for development and test swarms
+    * 3 manager swarm can tolerate 1 failure; 5 can tolerate 2
+    * Docker recommends a max. Of 7 managers
+    * Distribute mangers across at least 3 availability zones
+
+#### Working manager
+* By default, managers perform worker responsibilities
+* Having over utilised managers can be detrimental to the performance of the swarm
+* You can use conservative resource reservation to make sure that managers won’t become starved for resources
+* You can prevent any work from being scheduled on manager nodes by draining them
+
+#### Working nodes
+* More worker nodes don’t necessarily have any detrimental effects in the cluster. Helps with increasing capacity
+
+---
+
+### Part 6 - Security
+
+#### Agenda
+* Cluster management
+* Data plane
+* Secrets
+* Locking a swarm
+
+#### Cluster management
+* Swarm mode uses PKI to secure swarm communication and state
+* Swarm nodes encrypt all control plane comms using mutual TLS
+* Docker assigns a manager that automatically creates several resources
+* Root CA; Key pair; Worker token; Manager token;
+* When a new node joins the swarm, the manager issues a new certificate which the node uses for communication
+* New managers also get a copy of the root CA
+* You can use an alternate CA instead of allowing Docker
+* The CA can be rotated out if required
+* CA will automatically rotate the TLS certs of all swarm nodes
+
+#### Data Plane
+* You can enable encryption of overlay networks at the time of creation
+    * When a traffic leaves a host, an IPSec encrypted channel is used to communicate with a destination host
+    * The swarm leader periodically regenerates and distributes the key used
+    * Overlay network encryption is not support for Windows as of Docker version 17.12
+
+#### Raft Logs/ Secrets
+* Encrypted at rest (unlike k8s secrets)
+
+#### Locking a Swarm
+* By default, they keys are stored on disk along with the Raft logs
+* You can use auto-locking to take control of the keys in the Swarm
+
+---
+
+## Demos
+_skipped taking notes_
+
+---
+
+## Wrap up
+
+### Part 11 - Summary
+* Networking
+    * Overlay networks
+    * Load balancing - VIP, DNS RR
+    * Routing Mesh - Ingress, external access
+* Container orchestration
+    * Influencing placement and rolling updates, rollbacks
+* Consistency
+    * Manager, worker nodes
+    * Raft consensus
+    * Tradeoffs with multiple managers
+    * Raft logs
+* Security
+    * Secure by default - PKI, token semantics
+    * Overlay network encryption
+    * Swarm autolock
+* Demos
+    * Setup a swarm
+    * Node management
+    * Service management
+    * Working with stacks
+
+---
