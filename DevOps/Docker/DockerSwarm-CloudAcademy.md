@@ -133,8 +133,6 @@
     * It is the default service publishing mode
 
 #### Routing Mesh
-
-#### Routing Mesh
 * The routing mesh combines an overlay network and a service virtual IP
 * When you init a swarm, the manager creates an overlay ingress network
 * Every node that joins the swarm is in the ingress network
