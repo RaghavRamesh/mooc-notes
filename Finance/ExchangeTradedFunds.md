@@ -1,5 +1,4 @@
 # Exchange Traded Funds - SGX SIP Online Education Module
-
 ### Exchange Traded Funds
 * Investment fund listed on a stock exchange which give investors exposure to different asset classes like stocks, bonds and commodities.
     * Investment fund: invests the pooled funds of individual investors according to pre-set investment objectives. Through an investment fund, individual can afford to hire professional fund managers, achieve portfolio diversification, gain access to performance of a basket of instruments (such as constituent stocks of STI in the case of STI ETF), and lower expenses through economies of scale.
@@ -16,20 +15,20 @@
 ETFs in SGX-ST can be divided into 2 types. The difference in these two types of ETFs is the replication method used to track the performance of the underlying asset
 
 #### Cash-based
-    1. Direct replication
-        * The ETF directly invests in the same constituents and in the same proportion as the underlying index to closely track the performance of the underlying index.
-    2. Statistical or representative sampling
-        1. The ETF invests in a selected number of constituents of the underlying index to track the performance of such index.
-        2. This method is commonly used when the issuer wishes to employ physical replication but the index has too many constituents, making it difficult to acquire and manage the proportion of all the index constituents.
+1. Direct replication
+    * The ETF directly invests in the same constituents and in the same proportion as the underlying index to closely track the performance of the underlying index.
+2. Statistical or representative sampling
+    1. The ETF invests in a selected number of constituents of the underlying index to track the performance of such index.
+    2. This method is commonly used when the issuer wishes to employ physical replication but the index has too many constituents, making it difficult to acquire and manage the proportion of all the index constituents.
 
 #### Synthetic
-    * Synthetic replication typically does not invest in the constituents of the benchmark index but involves the use of derivatives to replicate the performance of the index.
-    * An ETF that adopts the synthetic replication method may hold cash and/or a basket of securities that are not the constituents of the stocks of the underlying index and use derivates such as swaps to exchange the performance of the basket of securities with the performance of the index. It may also purchase derivates issued by a 3rd party such as participatory notes (p-notes) to replicate the index.
-    * SR allows issuer to minimise tracking error but that comes at a cost:
-        * The ETF will be exposed to the credit risk of the swap counterparts and will be used by the issuer to exchange the performance of the assets for the performance of the underlying index
-        * In the case of a default by the swap counterparty, the ETF will not be able to obtain the performance of the underlying index from the swap counter party
-        * The extent of losses for the ETF depends on the exposure of the ETF to the counter party. If the exposure of the ETF to this swap counter party is 10%, then the max loss is 10%
-        * However, the ETF still holds on to a pool of assets which generates performance used to swap for the performance of the underlying index
+* Synthetic replication typically does not invest in the constituents of the benchmark index but involves the use of derivatives to replicate the performance of the index.
+* An ETF that adopts the synthetic replication method may hold cash and/or a basket of securities that are not the constituents of the stocks of the underlying index and use derivates such as swaps to exchange the performance of the basket of securities with the performance of the index. It may also purchase derivates issued by a 3rd party such as participatory notes (p-notes) to replicate the index.
+* SR allows issuer to minimise tracking error but that comes at a cost:
+    * The ETF will be exposed to the credit risk of the swap counterparts and will be used by the issuer to exchange the performance of the assets for the performance of the underlying index
+    * In the case of a default by the swap counterparty, the ETF will not be able to obtain the performance of the underlying index from the swap counter party
+    * The extent of losses for the ETF depends on the exposure of the ETF to the counter party. If the exposure of the ETF to this swap counter party is 10%, then the max loss is 10%
+    * However, the ETF still holds on to a pool of assets which generates performance used to swap for the performance of the underlying index
 
 ### ETF Advantages
 While ETFs and Unit Trusts are both managed by professional fund managers there are some key benefits for ETFs
