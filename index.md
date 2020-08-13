@@ -30,4 +30,4 @@
 
 
 - [Finance](https://raghavramesh.github.io/mooc-notes/Finance)
-  - [Exchange Traded Funds](https://raghavramesh.github.io/mooc-notes/Finance/ExhangeTradedFunds.html)
+  - [Exchange Traded Funds](https://raghavramesh.github.io/mooc-notes/Finance/ExchangeTradedFunds.html)
