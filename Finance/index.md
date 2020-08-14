@@ -1,2 +1,4 @@
 - [Home](https://raghavramesh.github.io/mooc-notes)
 - [Exchange Traded Funds](https://raghavramesh.github.io/mooc-notes/Finance/ExchangeTradedFunds.html)
+- [Exchange Traded Notes](https://raghavramesh.github.io/mooc-notes/Finance/ExchangeTradedNotes.html)
+- [Futures](https://raghavramesh.github.io/mooc-notes/Finance/Futures.html)
