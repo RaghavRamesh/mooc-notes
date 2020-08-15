@@ -1,12 +1,12 @@
 # Exchange Traded Notes - SGX SIP Online Education Module
 
-## What is Exchange Traded Notes?
+## What are Exchange Traded Notes?
 An ETN is a debt security (debt obligation) that is traded on exchange that is designed to track an underlying index like equity index, commodity price and currency rate.
 
 The issuer of an ETN (investment bank) is obligated to deliver the index or asset performance (less fees) upon repurchase or maturity.
 
 ### Returns on ETN
-Returns on ETNs are Based on the performance of the underlying index. ETNs do not:
+Returns on ETNs are based on the performance of the underlying index. ETNs do not:
 * Provide regular coupon payments like bonds
 * Pay interest
 * Guarantee returns or return of principal
@@ -28,13 +28,13 @@ Other general risks such as market risk and liquidity risk are also applicable t
 * Principal guaranteed:
     * ETFs: No
     * ETNs: No
-* Expiry
+* Expiry:
     * ETFs: No
     * ETNs: Generally yes
-* Tracking error
+* Tracking error:
     * ETFs: Yes
     * ETNs: No
-* Credit risk of issuer
+* Credit risk of issuer:
     * ETFs: No. Custody of fund assets are segregated from issuer’s assets. The liquid assets directly held by the fund are recoverable.
     * ETNs: Yes. ETNs are debt obligations owed by the issuer to investors.
 

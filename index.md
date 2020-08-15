@@ -33,3 +33,4 @@
   - [Exchange Traded Funds](https://raghavramesh.github.io/mooc-notes/Finance/ExchangeTradedFunds.html)
   - [Exchange Traded Notes](https://raghavramesh.github.io/mooc-notes/Finance/ExchangeTradedNotes.html)
   - [Futures](https://raghavramesh.github.io/mooc-notes/Finance/Futures.html)
+  - [Structured Warrants and Options](https://raghavramesh.github.io/mooc-notes/Finance/StructuredWarrantsAndOptions.html)
