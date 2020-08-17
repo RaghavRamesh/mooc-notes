@@ -55,5 +55,58 @@ A call warrant with a high exercise price has a lower probability of expiring In
 A high exercise price will increase the probability of a put warrant expiring In-The-Money while a low exercise price will reduce that probability.
 
 #### Implied or Perceived Future Volatility of the Underlying Asset
-_to be continued__
+Implied volatility is the market’s expectation of the underlying asset price fluctuation over the remaining life space of the warrant. The higher the implied warrant, the wider the expected price fluctuation and hence, the higher the chance that the warrant will expire In-The-Money.
+In addition, a higher implied volatility also attributes higher hedging risks to structured warrant issuers. Hence, warrants with high implied volatility will be priced higher for both call and put warrants.
 
+#### Lifespan of the Structured Warrant
+If the time to expiry for a structured warrant is longer, it will have more time for the structured warrant to move in the direction favourable to the structured warrant holder. Hence, the price of a structured warrant is higher if it has a longer time to expiry.
+
+Warrants and options are closely linked to stocks, and so investors sometimes forget that warrants and options have expiry dates. They have no value after expiry.
+
+### Structured Warrants vs. Options
+* Issuer and Market
+    * Structured Warrant: The issuer is usually a financial institution like an investment bank; traded in the securities market
+    * Options: Developed by an exchange; traded in the derivatives market
+* Trading Mechanism
+    * SW: Investors can only be buyers (no writing of positions)
+        * Positive view: investors can buy a call warrant
+        * Negative view: investors can buy a put warrant
+    * Options:
+        * Writing a call or put options means that you are selling a call or put option. If you sell a call then you are obliged to sell the underlying asset at the strike price at a future date. If you sell a put then you are obliged to buy the underlying asset at the strike price at a future date.
+        * Positive view: Investors can buy a call option
+        * Negative view: Investors can buy a put option
+* Product Features
+    * SW: Wide range of exercise prices and expiry dates which are determined by the issuer
+    * Options: Contracts are standardised with limited expiry dates and exercise prices
+* Maximum liability/maximum loss
+    * SW: Losses capped at total investment sum and transaction fees
+    * Options: Potentially unlimited liability/losses for writing an option (short selling)
+* Margin Requirements
+    * SW: None
+    * Options: Applicable to an option writer but not an option buyer
+* Liquidity
+    * SW: A designated market maker (DMM) is required under Exchange Rules to provide competitive bids and offer quotations on a continuous basis
+    * Options: Only commercial market makers (CMMs) provide liquidity. A CMM is not regulated under Exchange Rules but will enjoy incentives if they meet certain obligations in terms of providing liquidity and bid-ask quotation)
+
+### Decipher the Name of a Structured Warrant
+* ABC XXX eCW180226A
+    * Name of underlying asset; Issuer; ‘e’ - European/Americal style; CW/PW: call or put warrant; Expiry date YYMMDD; Last letter distinguishes between multiple warrants issued under same underlying and expiry date
+* ABC#####XXXeCW171228
+    * Underlying asset; exercise price; issuer; European/American; CW/PW; Expiry date
+
+### Risks
+Investors should read the relevant listing docs for full list of risks involved in trading structured warrants/options.
+* Market Risks
+    * Market price affected by many factors including but not limited to, the level of volatility of the underlying asset, time remaining to expiry and interest rate
+    * Loss of entire investment: If the structured warrant/option expires At-The-Money or Out-Of-The-Money, investors holding on to these products will lose their entire investment capital
+* Product Risks
+    * Leverage Risk
+        * As structured warrants/options are leveraged instruments, gains and losses will be magnified. Movement in the underlying asset’s price will have a greater percentage impact on the price of the structured warrant/option
+    * Trading may be suspended or halted if the underlying stock is suspended or halted
+* Liquidity Risks
+    * The secondary market may be illiquid: The DMM appointed for structured warrants may be the only market participant buying and selling the warrants. Hence, the investor may not be able to realise the value of the warrants. Hence, the investor may not be able to realise the value of the warrants. Do note that the bid-ask spread increases with illiquidity.
+* Issuer Risks
+    * Exposed to credit risk of issuer
+        * Structured warrant holders are unsecured creditors of the issuer. They have no preferential claim to any assets that an issuer may hold in the event the issuer is unable to fulfil its obligations
+
+---
