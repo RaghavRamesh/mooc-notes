@@ -4,3 +4,4 @@
 - [Futures](https://raghavramesh.github.io/mooc-notes/Finance/Futures.html)
 - [Structured Warrants and Options](https://raghavramesh.github.io/mooc-notes/Finance/StructuredWarrantsAndOptions.html)
 - [Daily Leverage Certificates (DLCs)](https://raghavramesh.github.io/mooc-notes/Finance/DailyLeverageCertificates.html)
+- [Leveraged Inverse Products](https://raghavramesh.github.io/mooc-notes/Finance/LeveragedInverseProducts.html)
