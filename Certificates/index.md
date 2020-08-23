@@ -1,4 +1,4 @@
-- [Pluralsight - Clean Architecture - Patterns, Principles and Practices](https://raghavramesh.github.io/mooc-notes/Certificates/Pluralsight-CleanArchitecture-PatternsPracticesandPrinciples.pdf)
+- [Pluralsight - Clean Architecture - Patterns, Principles and Practices](https://github.com/RaghavRamesh/mooc-notes/blob/master/Certificates/Pluralsight-CleanArchitecture-PatternsPracticesandPrinciples.pdf)
 - [Cloud Academy - CKAD Learning Path](https://github.com/RaghavRamesh/mooc-notes/blob/master/Certificates/CloudAcademy-CKADLearningPath.pdf)
 - [Cloud Academy - Getting Started with Kubernetes](https://github.com/RaghavRamesh/mooc-notes/blob/master/Certificates/Pluralsight-GettingStartedwithKubernetes.pdf)
 - [LearnK8s - 3 day Kubernetes Workshop](https://github.com/RaghavRamesh/mooc-notes/blob/master/Certificates/learnk8s.png)
