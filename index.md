@@ -37,4 +37,4 @@
   - [Daily Leverage Certificates (DLCs)](https://raghavramesh.github.io/mooc-notes/Finance/DailyLeverageCertificates.html)
   - [Leveraged Inverse Products](https://raghavramesh.github.io/mooc-notes/Finance/LeveragedInverseProducts.html)
 
-- [Certificates](https://raghavramesh.github.io/mooc-notes/Certificates)
+- [Course Completion Certificates](https://raghavramesh.github.io/mooc-notes/Certificates)
