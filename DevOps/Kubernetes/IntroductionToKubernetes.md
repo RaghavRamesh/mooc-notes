@@ -76,7 +76,7 @@ _skipped taking notes_
 * Nodes are the machines in the clusters. They can be physical or virtual machines
 * Nodes are categorised as workers or masters
 * Each worker node includes software to run containers managed by the k8s control plane
-* Master nodes run the control place
+* Master nodes run the control plane
 * The control plane is a set of APIs and software that k8s users interact with
 * The APIs and software are referred to as master components
 
@@ -307,9 +307,9 @@ There is an issue with the current design for the example. Since k8s can only sc
 
 ##### Environment Variables for Service Discovery
 * In the Pod manifest the value for the host and port take the following convention
-    * IP address: <all_caps_service_name>_SERVICE_HOST. (Hyphens in service name replaced by “_”)
-    * Port: <all_caps_service_name>_SERVICE_PORT
-    * Named port: <all_caps_service_name>_SERVICE_PORT_<all_caps_port_name>
+    * IP address: `<all_caps_service_name>_SERVICE_HOST`(Hyphens in service name replaced by “_”)
+    * Port: `<all_caps_service_name>_SERVICE_PORT`
+    * Named port: `<all_caps_service_name>_SERVICE_PORT_<all_caps_port_name>`
     * For e.g.,
         * `name: REDIS_URL`
         * `value: redis://$(DATA_TIER_SERVICE_HOST):$(DATA_TIER_SERVICE_PORT_REDIS)`
@@ -321,7 +321,7 @@ There is an issue with the current design for the example. Since k8s can only sc
 ##### DNS for Service Discovery
 * K8s will add DNS A records for every service
 * Naming convention is as follows:
-    * IP address: <service_name>.<service_namespace>. No need to convert hyphens to underscores or all caps when using DNS for service discovery
+    * IP address: `<service_name>.<service_namespace>`. No need to convert hyphens to underscores or all caps when using DNS for service discovery
     * Port: needs to be extracted from SRV DNS record and that isn’t something we can use in the manifest so we either have to hard-code the port information or use the *SERVICE_PORT env var
     * However, if the service is in the same namespace, then you can simply use the service name
     * For e.g.,
