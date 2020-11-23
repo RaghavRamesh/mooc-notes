@@ -307,7 +307,7 @@ There is an issue with the current design for the example. Since k8s can only sc
 
 ##### Environment Variables for Service Discovery
 * In the Pod manifest the value for the host and port take the following convention
-    * IP address: `<all_caps_service_name>_SERVICE_HOST`(Hyphens in service name replaced by “_”)
+    * IP address: `<all_caps_service_name>_SERVICE_HOST` (Hyphens in service name replaced by “_”)
     * Port: `<all_caps_service_name>_SERVICE_PORT`
     * Named port: `<all_caps_service_name>_SERVICE_PORT_<all_caps_port_name>`
     * For e.g.,
@@ -322,13 +322,13 @@ There is an issue with the current design for the example. Since k8s can only sc
 * K8s will add DNS A records for every service
 * Naming convention is as follows:
     * IP address: `<service_name>.<service_namespace>`. No need to convert hyphens to underscores or all caps when using DNS for service discovery
-    * Port: needs to be extracted from SRV DNS record and that isn’t something we can use in the manifest so we either have to hard-code the port information or use the *SERVICE_PORT env var
+    * Port: needs to be extracted from SRV DNS record and that isn’t something we can use in the manifest so we either have to hard-code the port information or use the SERVICE_PORT env var
     * However, if the service is in the same namespace, then you can simply use the service name
     * For e.g.,
         * `name: API_URL`
         * `value: http://app-tier.service-discovery:8080`
     * The cluster DNS resolves the DNS name to the service IP address.
-* It is possible to use the DNS SRV port record to configure the pod on startup using initContainers.
+* It is possible to use the DNS SRV port record to configure the pod on startup using init containers.
 
 ##### Summary
 * Services for N-tier applications
