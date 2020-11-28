@@ -1,4 +1,5 @@
 - [Home](https://raghavramesh.github.io/mooc-notes)
+- [CKAD - Certified Kubernetes Application Developer](https://github.com/RaghavRamesh/mooc-notes/blob/master/Certificates/CKAD.pdf)
 - [Pluralsight - Clean Architecture - Patterns, Principles and Practices](https://github.com/RaghavRamesh/mooc-notes/blob/master/Certificates/Pluralsight-CleanArchitecture-PatternsPracticesandPrinciples.pdf)
 - [Cloud Academy - CKAD Learning Path](https://github.com/RaghavRamesh/mooc-notes/blob/master/Certificates/CloudAcademy-CKADLearningPath.pdf)
 - [Cloud Academy - Getting Started with Kubernetes](https://github.com/RaghavRamesh/mooc-notes/blob/master/Certificates/Pluralsight-GettingStartedwithKubernetes.pdf)
