@@ -2,6 +2,7 @@
 - [Amazon Elastic Block Store (EBS)](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonEBS.html)
 - [Amazon EC2 Instance Storage](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonEC2InstanceStorage.html)
 - [Amazon S3](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonS3.html)
+- [Amazon S3 Bucket Properties and Management Features](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonS3BucketPropertiesAndManagementFeatures.html)
 
 
 # AWS Storage Services
