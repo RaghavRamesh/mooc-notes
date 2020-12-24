@@ -25,6 +25,7 @@
       - [Amazon Elastic Block Store (EBS)](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonEBS.html)
       - [Amazon EC2 Instance Storage](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonEC2InstanceStorage.html)
       - [Amazon S3](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonS3.html)
+      - [Amazon Elastic File System (EFS)](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonEFS.html)
   - [Microservices](https://raghavramesh.github.io/mooc-notes/DevOps/Microservices/MicroservicesFundamentals.html)
   - [Monitoring Containerized Application Health with Docker](https://raghavramesh.github.io/mooc-notes/DevOps/Monitoring/MonitoringContainerizedApplicationHealthWithDocker.html)
   - [Pivotal Cloud Foundry](https://raghavramesh.github.io/mooc-notes/DevOps/PivotalCloudFoundry/PivotalCloudFoundryDeveloper.html)

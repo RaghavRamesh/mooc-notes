@@ -3,7 +3,7 @@
 - [Amazon EC2 Instance Storage](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonEC2InstanceStorage.html)
 - [Amazon S3](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonS3.html)
 - [Amazon S3 Bucket Properties and Management Features](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonS3BucketPropertiesAndManagementFeatures.html)
-- [Amazon Elastif File System (EFS)](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonEFS.html)
+- [Amazon Elastic File System (EFS)](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonEFS.html)
 
 # AWS Storage Services
 AWS facilitates movement from DCs to Cloud because of
