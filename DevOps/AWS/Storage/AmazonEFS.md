@@ -163,4 +163,182 @@ _TODO: insert image from Evernote_
 
 ---
 
-_to be continued..._
+## Managing EFS Security
+
+### Agenda
+
+- Access control and the permissions required to both operate and create your EFS filesystem
+- How EFS manages data encryption
+- Necessary security groups
+
+### Access Control
+
+Before you can create and manage your EFS file system, you need to ensure that you have the correct permissions to do so.
+- To initially create your EFS file system you need to ensure that you have 'Allow' access the following services:
+	- `elasticfilesystem:CreateFileSystem`
+	- `elasticfilesystem:CreateMountTarget`
+	- `ec2:DescribeSubnet`
+	- `ec2:CreateNetworkInterface`
+	- `ec2:DescribeNetworkInterface`
+- When applying these permissions to your policies, the resource for the elastic file system actions will point to the following resource:
+	- Resource: "arn:aws:elasticfilesystem:us=west-2:<account-id>:file-system/*"
+- A resource is not required for the EC2 actions and, as a result, the value will be represented via a wildcard.
+Full example of what the policy should look like:
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid" : "PermissionToCreateEFSFileSystem",
+      "Effect": "Allow",
+      "Action": [
+        "elasticfilesystem:CreateFileSystem",
+        "elasticfilesystem:CreateMountTarget"
+      ],
+      "Resource": "arn:aws:elasticfilesystem:region-id:file-system/*"
+    },
+    {
+     "Sid" : "PermissionsRequiredForEC2",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeSubnets",
+        "ec2:CreateNetworkInterface",
+        "ec2:DescribeNetworkInterfaces"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+In addition to the these policies, you'll also need the following permissions to manage EFS using the AWS management console:
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid" : "Stmt1AddtionalEC2PermissionsForConsole",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeVpcs",
+        "ec2:DescribeVpcAttribute"
+      ],
+      "Resource": "*"
+    }
+    {
+     "Sid" : "Stmt2AdditionalKMSPermissionsForConsole",
+      "Effect": "Allow",
+      "Action": [
+        "kms:ListAliases",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+The above permissions allow the console to
+- View EFS resources
+- Query EC2
+- Display VPCs, AZs and security groups
+- Enable KMS actions if encryption is enabled on the EFS filesystem
+
+### Encryption
+
+EFS supports both encryption at rest and in transit
+#### At rest
+- Uses the KMS to manage encryption keys
+- A KMS master key is required. It can encryption data of upto 4KB in size, but is usually used in relation to data encryption keys: CMK - Customer Master Key which is the key that is used to encrypt the data
+- 2 types of KMS
+	1. Those created by customers which can either be created using KMS, or by importing key material from existing key management applications into a new CMK
+	2. Those that are managed and created by AWS themselves. In the example in the image, the CMK selected is an AWS managed master key. 
+
+#### In transit
+- The encryption is enabled through the utilization of the TLS protocol, which is transport layer security, when you perform your mounting of your EFS file system.
+- The best way to do this is to use the EFS mount helper as I did  earlier in a previous demonstration. The command used to implement the  use of TLS for in-transit encryption is as follows:
+```
+sudo mount -t efs  -o tls fs-12345678:/ /mnt/efs
+```
+
+- This will ensure that the mount helper creates a client stunnel process using TLS version 1.2. 'Stunnel is an open-source multi-platform application used to provide a universal TLS/SSL tunneling service. Stunnel can be used to provide secure encrypted connections for clients or servers that do not speak TLS or SSL natively.'(Wikipedia) This stunnel process is used to listen out for any traffic, using NFS, which it then redirects to the client stunnel process.
+
+
+---
+
+## Importing Data
+
+### How to import on-premise data into EFS
+- The recommended course of action is to use another service called AWS DataSync.
+- This service is specifically designed to help you securely move and migrate and synchronize data for your existing on-premises site into AWS Storage Services such as Amazon EFS or Amazon S3 with simplicity and ease.
+- The data transfer can either be accomplished over a direct connect link or over the internet.
+- To sync source files from your on-premises environment, you must download the DataSync agent as a VMware ESXi host to your site.
+- The agent is configured with the source and destination target and associated with your AWS account, and logically sits in between your on-premise file system and your EFS file system. 
+- DataSync is also very useful if you want to transfer files between EFS file systems either within the same AWS account or cross-account and owned by a third-party.
+
+### Use cases
+
+- You can migrate an NFS file system from Amazon EC2 to Amazon EFS within the same AWS region.
+- Replace an NFS file system from Amazon EC2 in one AWS region to an Amazon EFS file system in a different AWS region for disaster recovery.
+- You can migrate an Amazon EFS file system from EFS standard with no lifecycle management to an EFS file system with lifecycle management enabled. File systems with lifecycle management enabled will automatically move to a lower-cost Infrequent Access storage class based on a predefined lifecycle policy.
+- You can migrate an Amazon EFS file system from one performance mode to another performance mode within the same AWS region
+- Replicate an Amazon EFS file system from one AWS region to another Amazon EFS file system in a different AWS region for disaster recovery.
+
+---
+
+# Summary
+
+
+### What is EFS and what it does
+
+- EFS provides simple scalable file storage for use with Amazon EC2 instances. Amazon Elastic File Storage or EFS is considered a file-level storage and is also optimized for load latency access. 
+- Amazon Elastic File Storage or EFS is considered a file-level storage and is also optimized for load latency access. 
+- EFS supports access by multiple EC2 instances and it can meet the  demands of tens, hundreds, or even thousands of EC2 instances  concurrently.
+- Uses standard file-system semantics such as locking files, renaming files, updating them, and using a hierarchical structure.
+- EFS provides the ability for users to browse cloud network resources. EC2 instances can be configured to access Amazon EFS instances using configured mount points, and mount points can be created in multiple availability zones. EFS is a fully managed, highly available and durable service.
+- And EFS uses standard operating system APIs, so any application that is designed to work with standard operating system APIs, will work with EFS. It supports both NFS versions 4.1 and 4.0 and the EFS file system is also regional. 
+
+### Storage classes and performance options
+
+- Amazon EFS offers two different storage classes, which offer different levels of performance and costs. These being Standard and Infrequent Access, known as IA.
+- The standard storage class is the default storage class used, and Infrequent Access is used to store data that is rarely accessed but provides a cost reduction on your storage.
+- IA access results in an increased first-spike latency impact when both reading and writing data when compared to that of Standard storage class. 
+- IA charges for the amount of space used and for each read and write you make to the storage class, whereas standard storage only charges for the amount of storage space used per month.
+- EFS lifecycle management will automatically move data between storage classes based upon file access. If a file has not been read or written to for over 30 days, EFS lifecycle management will move the data to the IA storage class to save on costs. 
+- When the file is accessed again, the 30-day timer is reset, and it is moved back to the standard storage class. The EFS lifecycle management will not move data below 128K in size, or any metadata.
+- EFS supports two performance modes, General Purpose and Max I/O. General Purpose is a default performance mode and is used for most use cases, offering all-round performance and low-latency file operation.
+- General Purpose allows only up to 7,000 file system operations per second, whereas Max I/O offers virtually unlimited amounts of throughput and IOPS. Max I/O file operation latency will be reduced compared to General Purpose.
+- EFS provides a CloudWatch metric, percent IO limit, which allows you to view your operations per second as a percentage of the top 7,000 limit. 
+- EFS also supports two throughput modes, Bursting Throughput and Provision Throughput.
+- Bursting Throughput, which is the default mode, scales as your file system grows. EFS credits are accumulated during periods of low-latency activity, operating below the baseline rate of throughput, set at 50 mebibytes per tebibyte of storage used.
+- Every file system can reach its baseline throughput 100% of the time, and using EFS credits allows it to burst above the baseline limit. 
+- Credits can be monitored with a CloudWatch metric of BurstCreditBalance.
+- Provisioned Throughput allows you to burst above your allocated allowance. However, this option does incur additional charges. 
+
+### Creating an EFS Filesystem
+
+Refer demo video
+
+### Managing EFS Security
+
+- To create your EFS file system, you need to have allow access (refer lecture notes)
+- To manage EFS using the AWS management console, you'll also need the following permissions (refer lecture notes)
+- EFS supports both encryption at rest and in transit
+- Encryption at rest is enabled via a checkbox when using the Management Console
+- Encryption at rest uses the Key Management Service, known as KMS, to manage your encryption keys
+- Encryption in transit is enabled by utilizing the Transport Layer Security (TLS) protocol when you perform your mounting of your EFS file system
+- It is best to use the EFS mount helper to implement encryption in transit
+- The mount helper will create a client stunnel process using TLS version 1.2
+- The stunnel process listens for any traffic using NDS which it then redirects to the encrypted port
+
+### Import data
+
+- the recommended course of action is to use AWS DataSync to import data.
+- AWS DataSync is designed to securely move and migrate and synchronize data from your existing on-premises site into AWS storage services.
+- Data transfer can be accomplished over a Direct Connect link, or over the internet.
+- To sync files from your on-premises environment, you must download the DataSync agent. You then need to configure the agent with a source and destination target, and DataSync can also transfer files between EFS file systems.
+
+---
