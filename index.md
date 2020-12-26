@@ -11,6 +11,8 @@
     - [Spring WebFlux](https://raghavramesh.github.io/mooc-notes/Backend/Java/SpringWebFlux/SpringWebFlux.html)
   - [Kafka](https://raghavramesh.github.io/mooc-notes/Backend/Kafka/Kafka.html)
   - [Maven](https://raghavramesh.github.io/mooc-notes/Backend/Maven/MavenFundamentals.html)
+
+
 - [DevOps](https://raghavramesh.github.io/mooc-notes/DevOps)
   - [Cloud Computing Fundamentals](https://raghavramesh.github.io/mooc-notes/DevOps/CloudComputingFundamentals/FundamentalsOfCloudComputing.html)
   - [Docker](https://raghavramesh.github.io/mooc-notes/DevOps/Docker)
@@ -20,15 +22,18 @@
   - [Kubernetes](https://raghavramesh.github.io/mooc-notes/DevOps/Kubernetes)
     - [Introduction to Kubernetes](https://raghavramesh.github.io/mooc-notes/DevOps/Kubernetes/IntroductionToKubernetes.html)
     - [Kubernetes Patterns](https://raghavramesh.github.io/mooc-notes/DevOps/Kubernetes/K8sPatterns.html)
-  - [AWS](https://raghavramesh.github.io/mooc-notes/DevOps/AWS)
+  - [AWS](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/index.html)
     - [Storage](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage)
       - [Amazon Elastic Block Store (EBS)](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonEBS.html)
       - [Amazon EC2 Instance Storage](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonEC2InstanceStorage.html)
       - [Amazon S3](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonS3.html)
       - [Amazon Elastic File System (EFS)](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonEFS.html)
+    - [Business Continuity Strategies](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/BusinessContinuityStrategies.html)
   - [Microservices](https://raghavramesh.github.io/mooc-notes/DevOps/Microservices/MicroservicesFundamentals.html)
   - [Monitoring Containerized Application Health with Docker](https://raghavramesh.github.io/mooc-notes/DevOps/Monitoring/MonitoringContainerizedApplicationHealthWithDocker.html)
   - [Pivotal Cloud Foundry](https://raghavramesh.github.io/mooc-notes/DevOps/PivotalCloudFoundry/PivotalCloudFoundryDeveloper.html)
+
+
 - [Misc](https://raghavramesh.github.io/mooc-notes/Misc)
   - [Clean Architecture - Patterns, Practices and Principles](https://raghavramesh.github.io/mooc-notes/Other/CleanArchitecture/CleanArchitecture-PatternsPracticesAndPrinciples.html)
   - [Colour Theory](https://raghavramesh.github.io/mooc-notes/Other/ColourTheory/ColourTheoryFundamentals.html)
@@ -42,5 +47,6 @@
   - [Structured Warrants and Options](https://raghavramesh.github.io/mooc-notes/Finance/StructuredWarrantsAndOptions.html)
   - [Daily Leverage Certificates (DLCs)](https://raghavramesh.github.io/mooc-notes/Finance/DailyLeverageCertificates.html)
   - [Leveraged Inverse Products](https://raghavramesh.github.io/mooc-notes/Finance/LeveragedInverseProducts.html)
+
 
 - [Course Completion Certificates](https://raghavramesh.github.io/mooc-notes/Certificates)
