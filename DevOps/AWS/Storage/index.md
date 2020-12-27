@@ -4,6 +4,7 @@
 - [Amazon S3](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonS3.html)
 - [Amazon S3 Bucket Properties and Management Features](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonS3BucketPropertiesAndManagementFeatures.html)
 - [Amazon Elastic File System (EFS)](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AmazonEFS.html)
+- [Using AWS for On-Premises Backup & Disaster Recovery](https://raghavramesh.github.io/mooc-notes/DevOps/AWS/Storage/AWSStorageForOnPremiseDRBackupStrategies.html)
 
 # AWS Storage Services
 AWS facilitates movement from DCs to Cloud because of
