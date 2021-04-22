@@ -1,4 +1,4 @@
 - [Home](https://raghavramesh.github.io/mooc-notes)
-- [Clean Architecture - Patterns, Practices and Principles](https://raghavramesh.github.io/mooc-notes/Other/CleanArchitecture/CleanArchitecture-PatternsPracticesAndPrinciples.html)
-- [Colour Theory](https://raghavramesh.github.io/mooc-notes/Other/ColourTheory/ColourTheoryFundamentals.html)
-- [IntelliJ](https://raghavramesh.github.io/mooc-notes/Other/IntelliJ/IntelliJ.html)
+- [Clean Architecture - Patterns, Practices and Principles](https://raghavramesh.github.io/mooc-notes/Misc/CleanArchitecture/CleanArchitecture-PatternsPracticesAndPrinciples.html)
+- [Colour Theory](https://raghavramesh.github.io/mooc-notes/Misc/ColourTheory/ColourTheoryFundamentals.html)
+- [IntelliJ](https://raghavramesh.github.io/mooc-notes/Misc/IntelliJ/IntelliJ.html)
