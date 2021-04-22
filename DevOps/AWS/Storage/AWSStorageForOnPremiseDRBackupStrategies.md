@@ -241,16 +241,102 @@ Some of these security features, which can help you maintain a level of data pro
 
 ### Using AWS Snowball for Data Transfer
 
+- Used to securely transfer large amounts of data in and out of AWS (Petabyte scale)
+- Either from your on-premise DC to Amazon S3, or from S3 to your DC using a physical appliance, known as a snowball
+- 50TB or an 80TB storage device depending on your region
+- The snowball appliance is dust, water and tamper resistant
+- Built for high speed data transfer
+	- RJ45 (Cat6)
+	- SFP+ Copper
+	- SFP+ Optical
 
+#### Encryption & Tracking
+
+- By default, all data transferred to the snowball appliance is automatically encrypted using 256-bit encryption keys generated from KMS, the key management service.
+- Whilst on the topic of security, it also features end to end tracking using an E ink shipping label. This ensures that when the device leaves your premises, it is sent to the right AWS facility.
+- The appliance can also be tracked using the AWS Simple Notification Service with text messages or via the AWS Management Console
+
+#### Compliance
+
+- From a compliance perspective, AWS Snowball is also HIPAA compliant allowing you to transfer protected health information in and out of S3.
+- When the transfer of data is complete via into S3 or into a customer's data center and the appliance is sent back to AWS. It is then the responsibility of AWS to ensure the data held in the Snowball Appliance is deleted and removed.
+- To control this process, AWS conforms to standards and guidelines set by NIST, the National Institute of Standard and Technology, to ensure this is performed and controlled and that all traces of data are removed from the media.
+
+#### Data Aggregation
+
+
+When sending or retrieving data, Snowball appliances can be aggregated together. For example, if you need to retrieve 400 terabytes of data from S3, then your data will be sent by five 80 terabyte Snowball appliances.
+
+So from a disaster recovery perspective, when might you need to use AWS Snowball? Well, it all depends on how much data you need to get back from S3 to your own corporate data center and how quickly you can do that. On the other hand, how much data do you need to get into S3?
+
+This'll depend on the connection you have to AWS from your data center. You may have direct connect connections, a VPN, or just an internet connection. And if you need to restore multiple petabytes of data, this could take weeks or even months to complete.
+
+As a general rule, if your data retrieval will take longer than a week using your existing connection method, then you should consider using AWS Snowball.
+
+#### AWS Snowball Process
+
+1. Create an export job
+2. Receive delivery of your appliance
+3. Connect the appliance to your network
+4. Connect the appliance to your network when appliance is off; Power on and configure network settings
+5. You are now ready to transfer the data
+6. Access the required credentials; Install the Snowball Client; Transfer the data using the client; Disconnect appliance when the data transfer is complete
+7. Return snowball appliance to AWS
 
 ---
 
 ### Using AWS Storage Gateway for on-premise data backup
 
+Storage Gateway allows you to provide a gateway between your own data center's storage systems such as your SAN, NAS or DAS and Amazon S3 and Glacier on AWS.
 
+
+
+- The software appliance can be downloaded from AWS as a virtual machine
+- 3 different configs
+	- File Gateway
+	- Volume Gateway
+	- Tape Gateway
+
+#### File Gateways
+
+- File gateways allow you to securely store your files as objects within S3.
+- Using as a type of file share which allows you mount on map drives to an S3 bucket as if the share was held locally on your own corporate network.
+- When storing files using the file gateway they sent to S3 over HTTPS and are also encrypted with S3's own server side encryption SSE-S3.
+- In addition to this local a on-premise cache is also provisioned for accessing your most recently accessed files to optimize latency with also helps to reduce egress traffic costs.
+- When your file gateway's first configured you must associate it with your S3 bucket which the gateway will then present as a NFS V.3 or V4.1 file system to your internal applications.
+- This allows you to view the bucket as a normal NFS file system, making it easy to mount as a drive on Linux or map a drive to it in Microsoft. Any files that are then written to these NFS file systems are stored in S3 as individual objects as a one to one mapping of files to objects
+
+#### Volume Gateways
+
+- These can be figured in one of two different ways, Stored volume gateways and cached volume gateways.
+- Stored
+	- Stored volume gateways are often used as a way to backup your local storage volumes to Amazon S3 whilst ensuring your entire data library also remains locally on-premise for very low latency data access.
+	- Volumes created and configured within the storage gateway are backed by Amazon S3 and are mounted as iSCSI devices that your applications can then communicate with.
+	- During the volume creation, these are mapped to your on-premise storage devices which can either hold existing data or be a new disk. As data is written to these iSCSI devices the data is actually written to your local storage services such as your own NAS, SAN or DAS storage solution. However the storage gateway then asynchronously copies this data to Amazon S3 as EBS snapshots.
+	- Having your entire dataset remain locally ensures you have the lowest latency possible to access your data which may be required for specific applications or security compliance and governance controls whilst at the same time providing a backup solution which is governed by the same controls and security that S3 offers.
+	- Volumes created can be between 1GiB and 16TB and for each storage gateway up to 32 stored volumes can be created which can give you a maximum total of 512TB of storage per gateway. Storage volume gateways also provide a buffer which uses your existing storage disks. This buffer is used as a staging point for data that is waiting to be written to S3.
+	- During the upload process the data is sent over an encrypted SSL channel and stored in an encrypted format within S3. To add to the management and backup of your data storage gateway makes it easy to take snapshots of your storage volumes at any point, which are then stored as EBS snapshots on S3. It's worth pointing out that these snapshots are incremental ensuring that only the data that's changed since the last backup is copied helping to minimize storage costs on S3.
+- Cached
+	- Cached volume gateways are differed to stored volume gateways in that the primary data storage is actually Amazon S3 rather than your own local storage solution.
+	- However cache volume gateways do utilize your local data storage as a buffer and the cache for recently accessed data to help maintain low latency, hence the name, Cache Volumes.
+	- Again, during the creation of these volumes they are presented as iSCSI volumes which can be mounted by an application service. The volumes themselves are backed by the Amazon S3 infrastructure as opposed to your local disks as seen in the stored volume gateway deployment. As a part of this volume creation you must also select some local disks on-premise to act as your local cache and a buffer for data waiting to be uploaded to S3.
+	- Again, this buffer is used as a staging point for data that is waiting to be written to S3 and during the upload process, the data is encrypted using an SSL channel where the data is then encrypted within SSE S3. The limitations is slightly different with cache volume gateways in that each volume created can be up to 32TB in size with support for up to 32 volumes meaning a total storage capacity of 1024TB per cache volume gateway.
+	- Although all of your primary data used by applications is stored in S3 across volumes, it is still possible to take incremental backups of these volumes as EBS snapshots. In a DR scenario, and as I mentioned in the previous section, this then enables quick deployment of the datasets which can be attached to EC2 instances as EBS volumes containing all of your data as required.
+
+#### Tape Gateway - Gateway VTL - Virtual Tape Library
+
+This allows you again to back up your data to S3 from your own corporate data center but also leverage Amazon Glacier for data archiving. Virtual Tape Library is essentially a cloud based tape backup solution replacing physical components with virtual ones.
+
+VTL Components
+
+- Storage Gateway. The gateway itself is configured as a tape gateway which as a capacity to hold 1500 virtual tapes.
+- Virtual Tapes. These are a virtual equivalent to a physical backup tape cartridge which can be anything from 100 GB to two and a half terabytes in size. And any data stored on the virtual tapes are backed by AWS S3 and appear in the virtual tape library.
+- Virtual Tape Library. VTL. As you may have guessed these are virtual equivalents to a tape library that contain your virtual tapes.
+- Tape Drives. Every VTL comes with ten virtual tape drives which are presented to your backup applications is iSCSI devices.
+- Media Changer. This is a virtual device that manages tapes to and from the tape drive to your VTL and again it's presented as an iSCSI device to your backup applications.
+- Archive. This is equivalent to an off-site tape backup storage facility where you can archive tapes from your virtual tape library to Amazon Glacier which as we already know, is used as a cold storage solution. If retrieval of the tapes are required, storage gateway uses the standard retrieval option which can take between 3 - 5 hours to retrieve your data.
+
+- Once your storage gateway has been configured as a tape gateway, your application and backup software can mount the tape drives along with the media changer is iSCSI devices to make the connection.
+- You can then create the required virtual tapes as you need them for backup, and your backup software can use these to back up the required data which is stored on S3.
 
 ---
-
-## Summary
-
-
